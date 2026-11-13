@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>netviz dev</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px 16px;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font);
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+        align-items: flex-start;
+      }
+      #panel {
+        width: 320px;
+        height: 460px;
+      }
+      #solo {
+        width: 320px;
+        height: 240px;
+        display: block;
+      }
+      button {
+        font: inherit;
+        font-size: var(--t-small);
+        color: var(--ink-2);
+        background: none;
+        border: 0;
+        padding: 8px 0;
+        margin-right: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      <button id="theme">Toggle theme</button>
+      <button id="toggle">Hide / show</button>
+      <button id="crash">Crash / revive</button>
+      <button id="mutate">New genome</button>
+    </p>
+    <div class="row">
+      <div id="panel"></div>
+      <canvas id="solo"></canvas>
+    </div>
+    <script type="module" src="./dev.ts"></script>
+  </body>
+</html>
