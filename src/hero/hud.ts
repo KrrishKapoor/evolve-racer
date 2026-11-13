@@ -91,19 +91,25 @@ export function createHud(root: HTMLElement, h: HudHandlers) {
     const g = sparkCanvas.getContext('2d')!;
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
     g.clearRect(0, 0, sw, sh);
-    let max = 1.05;
-    for (const v of hist) max = Math.max(max, v);
+    // Scale to the data so lap-time gains stay visible; the dashed one-lap mark shows when it is in range.
+    let lo = Infinity, hi = -Infinity;
+    for (const v of hist) { lo = Math.min(lo, v); hi = Math.max(hi, v); }
+    if (!hist.length) { lo = 0; hi = 1.05; }
+    const span = Math.max(hi - lo, 0.05);
+    lo -= span * 0.08;
+    hi += span * 0.08;
     const pad = 3;
-    const y = (v: number) => sh - pad - (v / max) * (sh - 2 * pad);
-    // The one-lap mark.
-    g.strokeStyle = palette.hairline;
-    g.lineWidth = 1;
-    g.setLineDash([2, 3]);
-    g.beginPath();
-    g.moveTo(0, Math.round(y(1)) + 0.5);
-    g.lineTo(sw, Math.round(y(1)) + 0.5);
-    g.stroke();
-    g.setLineDash([]);
+    const y = (v: number) => sh - pad - ((v - lo) / (hi - lo)) * (sh - 2 * pad);
+    if (lo <= 1 && hi >= 1) {
+      g.strokeStyle = palette.hairline;
+      g.lineWidth = 1;
+      g.setLineDash([2, 3]);
+      g.beginPath();
+      g.moveTo(0, Math.round(y(1)) + 0.5);
+      g.lineTo(sw, Math.round(y(1)) + 0.5);
+      g.stroke();
+      g.setLineDash([]);
+    }
     if (hist.length < 2) return;
     const n = hist.length;
     const x = (i: number) => (i / (n - 1)) * (sw - 2 * pad) + pad;

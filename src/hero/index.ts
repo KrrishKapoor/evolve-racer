@@ -293,9 +293,12 @@ export function mountHero(root: HTMLElement): void {
       g.globalAlpha = 1;
       if (k >= 1) trackFadeStart = -1;
     } else {
+      // While drawing, the old circuit recedes so the new stroke reads clearly.
+      g.globalAlpha = drawing ? 0.3 : 1;
       g.drawImage(trackLayer, 0, 0);
+      g.globalAlpha = 1;
     }
-    g.drawImage(lineLayer, 0, 0);
+    if (!drawing) g.drawImage(lineLayer, 0, 0);
 
     applyView(g, view, dpr);
     if (snap && speed !== 'max' && !drawing) drawCars(snap);
