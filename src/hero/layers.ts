@@ -8,9 +8,16 @@ export function makeLayer(): HTMLCanvasElement {
 }
 
 function prep(c: HTMLCanvasElement, w: number, h: number, dpr: number, v: View): CanvasRenderingContext2D {
-  c.width = Math.round(w * dpr);
-  c.height = Math.round(h * dpr);
+  const cw = Math.round(w * dpr), ch = Math.round(h * dpr);
   const g = c.getContext('2d')!;
+  // Reallocating is slow; during a refit the size stays put and only the contents change.
+  if (c.width !== cw || c.height !== ch) {
+    c.width = cw;
+    c.height = ch;
+  } else {
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.clearRect(0, 0, cw, ch);
+  }
   applyView(g, v, dpr);
   return g;
 }

@@ -89,9 +89,29 @@ export function mountHero(root: HTMLElement): void {
     box.classList.toggle('is-max', speed === 'max');
   }
 
+  // On wide screens the inspector floats over the right of the stage; the circuit slides left to clear it.
+  const wide = matchMedia('(min-width: 900px)');
+  let inset = 0, insetFrom = 0, insetTo = 0, insetStart = -1;
+  function setInset(): void {
+    const to = !inspectorEl.hidden && wide.matches ? inspectorEl.offsetWidth + 24 : 0;
+    if (to === insetTo) return;
+    insetTo = to;
+    insetFrom = inset;
+    insetStart = matchMedia('(prefers-reduced-motion: reduce)').matches ? -1 : performance.now();
+    if (insetStart < 0) { inset = to; renderLayers(); }
+  }
+  function stepInset(now: number): void {
+    if (insetStart < 0) return;
+    const k = Math.min(1, (now - insetStart) / 360);
+    const e = k < 0.5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2;
+    inset = insetFrom + (insetTo - insetFrom) * e;
+    if (k >= 1) insetStart = -1;
+    renderLayers();
+  }
+
   function renderLayers(): void {
     if (!w || !ht) return;
-    fitView(view, track, w, ht, w < 500 ? 12 : 28);
+    fitView(view, track, w - inset, ht, w < 500 ? 12 : 28);
     drawTrackLayer(trackLayer, track, w, ht, dpr, view);
     drawLineLayer(lineLayer, bestLine, w, ht, dpr, view);
   }
@@ -137,6 +157,7 @@ export function mountHero(root: HTMLElement): void {
     w = r.width; ht = r.height;
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(ht * dpr);
+    insetTo = -1; setInset(); inset = insetTo; insetStart = -1; // snap, no animation on resize
     renderLayers();
     hud.redraw();
   }).observe(box);
@@ -167,6 +188,7 @@ export function mountHero(root: HTMLElement): void {
     client.inspect(-1);
     inspector.hide();
     inspectorEl.hidden = true;
+    setInset();
   }
 
   function pick(snap: Snapshot, x: number, y: number, radius: number): number {
@@ -208,6 +230,7 @@ export function mountHero(root: HTMLElement): void {
     inspectedGen = snap.generation;
     client.inspect(i);
     inspectorEl.hidden = false;
+    setInset();
   });
 
   canvas.addEventListener('pointermove', (e) => {
@@ -282,6 +305,7 @@ export function mountHero(root: HTMLElement): void {
       dbg.population = snap.count;
       if (inspected >= 0 && snap.detail) inspector.update(snap.detail);
     }
+    stepInset(now);
     draw(snap, now);
     client.tick();
   }
