@@ -64,7 +64,8 @@ export function mountRacingLine(fig: HTMLElement): void {
     '<span class="xs-key xs-key--slow"></span><span>Slow</span>' +
     '<span class="xs-key xs-key--fast"></span><span>Fast</span>';
   const keyLabel = legend.querySelector('.xs-key-first') as HTMLElement;
-  fig.append(canvas, legend, trace, readout, controls);
+  const hint = el('p', 'xs-hint', 'Drag along the speed trace to compare both lines point by point. The slider steps back through generations.');
+  fig.append(canvas, legend, trace, readout, controls, hint);
 
   range.addEventListener('input', () => {
     const v = Number(range.value);

@@ -16,7 +16,7 @@ export function mountSections(root: HTMLElement): void {
   mountNetwork(
     sectionFrame(root, 'network', 'The driver', 'What the network does.', [
       'A small neural network turns those eight numbers into two: how hard to steer, and whether to accelerate or brake.',
-      'Nobody writes its weights. Orange connections push a signal up, blue ones push it down, and thicker means stronger.',
+      'Nobody sets its weights by hand. Orange connections push a signal up, blue ones push it down, and thicker means stronger.',
     ]),
   );
   mountGenetics(
@@ -27,7 +27,7 @@ export function mountSections(root: HTMLElement): void {
   );
   mountRacingLine(
     sectionFrame(root, 'racing-line', 'The result', 'Why the racing line emerges.', [
-      'A car can only turn so sharply at a given speed. Go into a corner too fast and it slides into the outside wall.',
+      'A car can only turn so sharply at a given speed. Enter a corner too fast and it slides into the outside wall. The shaded ceiling on the speed trace is that limit.',
       'So the fastest drivers learn to swing wide, clip the inside, and get back on the throttle early. Nobody told them to; it is simply what survives.',
     ]),
   );
