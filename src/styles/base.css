@@ -143,13 +143,15 @@ button {
   text-wrap: pretty;
 }
 
+/* Each section brings its own bottom margin; the shell supplies the gap above the first one. */
 #sections {
   display: block;
+  padding-top: var(--section-gap);
 }
 
 .footer {
-  max-width: var(--page);
-  margin: var(--section-gap) auto 0;
+  max-width: calc(var(--page) + 2 * var(--gutter));
+  margin: 0 auto;
   padding: 2rem var(--gutter) 3rem;
   display: flex;
   gap: 1rem;

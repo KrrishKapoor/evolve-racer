@@ -119,7 +119,7 @@ export function mountHero(root: HTMLElement): void {
     prevLayer.width = trackLayer.width;
     prevLayer.height = trackLayer.height;
     prevLayer.getContext('2d')!.drawImage(trackLayer, 0, 0);
-    trackFadeStart = performance.now();
+    trackFadeStart = matchMedia('(prefers-reduced-motion: reduce)').matches ? -1 : performance.now();
     track = t;
     client.setTrack(t);
     restartUi();
