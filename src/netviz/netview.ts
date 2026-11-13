@@ -173,7 +173,7 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
       const neg = ((b / W_LEVELS) | 0) % 2 === 1;
       const al = (b / (2 * W_LEVELS)) | 0;
       ctx.strokeStyle = neg ? theme.cool : theme.accent;
-      ctx.globalAlpha = 0.07 + 0.88 * Math.pow(al / (A_LEVELS - 1), 1.4);
+      ctx.globalAlpha = 0.045 + 0.9 * Math.pow(al / (A_LEVELS - 1), 1.6);
       ctx.lineWidth = 0.6 + wl * 0.75;
       ctx.beginPath();
       for (let k = s; k < t; k++) {
@@ -208,7 +208,7 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
         ctx.globalAlpha = 0.08 + 0.8 * Math.max(0, Math.min(1, a));
       } else {
         ctx.fillStyle = a < 0 ? theme.cool : theme.accent;
-        ctx.globalAlpha = 0.06 + 0.9 * Math.min(1, Math.abs(a));
+        ctx.globalAlpha = 0.04 + 0.86 * Math.min(1, Math.abs(a));
       }
       ctx.fill();
       ctx.globalAlpha = 1;
@@ -219,35 +219,39 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
   }
 
   function drawInputGlyphs() {
-    const gx = colX[0] - r - 16;
-    const len = Math.min(10, r * 1.7);
+    const gx = colX[0] - r - 13;
+    const len = Math.max(8, Math.min(12, r * 1.9));
     ctx.lineCap = 'round';
     for (let i = 0; i < RAY_COUNT; i++) {
-      const y = ny[i] + len * 0.45;
       const dx = Math.sin(RAY_ANGLES[i]);
       const dy = -Math.cos(RAY_ANGLES[i]);
+      // Centre each glyph on its neuron row; the dot marks the car end.
+      const ox = gx - (dx * len) / 2;
+      const oy = ny[i] - (dy * len) / 2;
       const reach = Math.max(0, Math.min(1, shown[i]));
-      // Full ray faint, current reading solid: the glyph shows direction and distance at once.
+      // Full ray faint, current reading solid: direction and distance at once.
       ctx.strokeStyle = theme.ink3;
-      ctx.globalAlpha = 0.6;
+      ctx.globalAlpha = 0.5;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(gx, y);
-      ctx.lineTo(gx + dx * len, y + dy * len);
+      ctx.moveTo(ox, oy);
+      ctx.lineTo(ox + dx * len, oy + dy * len);
       ctx.stroke();
       ctx.globalAlpha = 1;
       ctx.strokeStyle = theme.ink2;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.moveTo(gx, y);
-      ctx.lineTo(gx + dx * len * reach, y + dy * len * reach);
+      ctx.moveTo(ox, oy);
+      ctx.lineTo(ox + dx * len * reach, oy + dy * len * reach);
       ctx.stroke();
       ctx.fillStyle = theme.ink2;
-      ctx.fillRect(gx - 1, y - 1, 2, 2);
+      ctx.beginPath();
+      ctx.arc(ox, oy, 1.4, 0, Math.PI * 2);
+      ctx.fill();
     }
     // Speed input: a small gauge bar.
     const k = RAY_COUNT;
-    const sw = 14;
+    const sw = 12;
     const sx = gx - sw / 2;
     const sy = ny[k] - 1;
     ctx.fillStyle = theme.ink3;
@@ -269,7 +273,7 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
     ctx.textAlign = 'left';
     ctx.fillText('OUT', barX - r - 10 - 6, y);
     ctx.textAlign = 'center';
-    ctx.fillText('SPD', colX[0] - r - 16, ny[RAY_COUNT] + 12);
+    ctx.fillText('SPD', colX[0] - r - 13, ny[RAY_COUNT] + 12);
   }
 
   // Bipolar bar centred at mid: steering is ink (a direction, not a judgement); throttle accent, brake cool.

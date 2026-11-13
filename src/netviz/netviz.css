@@ -157,9 +157,8 @@
   gap: 6px;
 }
 .nv-ray-bar {
-  width: 100%;
-  max-width: 22px;
-  height: 28px;
+  width: 4px;
+  height: 30px;
   background: var(--hairline);
   display: flex;
   align-items: flex-end;
