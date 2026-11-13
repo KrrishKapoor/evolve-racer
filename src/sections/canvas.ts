@@ -89,9 +89,10 @@ export function runWhileVisible(el: Element, frame: (dt: number) => void): void 
     onScreen = e[e.length - 1].isIntersecting;
     sync();
   }, { rootMargin: '100px' }).observe(el);
-  // Resizing clears a canvas; repaint a still frame when the loop is not running to do it.
+  // Paint after resize delivery: frame() also updates readouts, which can resize the
+  // observed figure. Doing that inside the observer triggers a resize-loop error.
   new ResizeObserver(() => {
-    if (!raf) frame(0);
+    if (!raf) requestAnimationFrame(() => { if (!raf) frame(0); });
   }).observe(el);
   onTheme(() => { if (!raf) frame(0); });
   document.addEventListener('visibilitychange', sync);
