@@ -1,8 +1,12 @@
 import { GENOME_SIZE, NEURON_COUNT, RAY_COUNT, type GenerationStats, type SimClient, type SimSpeed, type Snapshot, type Track } from './types';
 import { frameLength, type FromWorker, type ToWorker } from './protocol';
 
-/** Worker-backed simulation. Frame buffers ping-pong between threads, so steady state allocates nothing big. */
-export function createSimClient(opts: { track: Track; population: number; seed: number }): SimClient {
+/**
+ * Worker-backed simulation with recycled frame buffers. `warmup` (default 0)
+ * runs that many initial generations in background slices and emits their stats.
+ * Frames remain available during warmup; pause suspends it. Resets never repeat it.
+ */
+export function createSimClient(opts: { track: Track; population: number; seed: number; warmup?: number }): SimClient {
   const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
   const listeners = new Set<(s: GenerationStats) => void>();
   let track = opts.track;
@@ -14,10 +18,10 @@ export function createSimClient(opts: { track: Track; population: number; seed: 
   let destroyed = false;
 
   const send = (m: ToWorker, transfer: Transferable[] = []) => worker.postMessage(m, transfer);
-  const reset = () => {
+  const reset = (warmup = 0) => {
     epoch++;
     latest = null;
-    send({ type: 'reset', epoch, track, population, seed: opts.seed });
+    send({ type: 'reset', epoch, track, population, seed: opts.seed, warmup });
   };
 
   worker.onmessage = (e: MessageEvent<FromWorker>) => {
@@ -49,7 +53,7 @@ export function createSimClient(opts: { track: Track; population: number; seed: 
     if (prev) spare = prev.x.buffer instanceof ArrayBuffer ? new Float32Array(prev.x.buffer) : null;
   };
 
-  reset();
+  reset(opts.warmup);
 
   return {
     get latest() { return latest; },

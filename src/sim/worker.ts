@@ -10,6 +10,7 @@ let sim: Simulation | null = null;
 let epoch = 0;
 let speed: SimSpeed = 1;
 let running = false;
+let warmup = 0;
 
 function post(msg: FromWorker, transfer: Transferable[] = []): void {
   scope.postMessage(msg, transfer);
@@ -17,19 +18,27 @@ function post(msg: FromWorker, transfer: Transferable[] = []): void {
 
 function step(): void {
   const stats = sim!.step();
-  if (stats) post({ type: 'gen', epoch, stats });
+  if (stats) {
+    if (warmup > 0) warmup--;
+    post({ type: 'gen', epoch, stats });
+  }
 }
 
+const shouldFreeRun = () => sim !== null && speed !== 0 && (warmup > 0 || speed === 'max');
+
 function freeRun(): void {
-  if (speed !== 'max' || !sim) { running = false; return; }
+  if (!shouldFreeRun()) { running = false; return; }
   const end = performance.now() + SLICE_MS;
-  do { for (let i = 0; i < 16; i++) step(); } while (performance.now() < end);
-  setTimeout(freeRun, 0);
+  // One step between deadline checks: a busy population must not turn a
+  // nominal 12ms slice into 16 expensive steps before messages can be handled.
+  do { step(); } while (shouldFreeRun() && performance.now() < end);
+  if (shouldFreeRun()) setTimeout(freeRun, 0);
+  else running = false;
 }
 
 function frame(buf: Float32Array): void {
   if (!sim) return;
-  if (speed === 1 || speed === 4) for (let i = 0; i < speed; i++) step();
+  if (warmup === 0 && (speed === 1 || speed === 4)) for (let i = 0; i < speed; i++) step();
   const s = sim.snapshot();
   const n = s.count;
   if (buf.length < frameLength(n)) buf = new Float32Array(frameLength(n));
@@ -60,6 +69,7 @@ scope.onmessage = (e: MessageEvent<ToWorker>) => {
     case 'reset':
       epoch = m.epoch;
       sim = createSimulation(m.track, { population: m.population, seed: m.seed });
+      warmup = Number.isFinite(m.warmup) ? Math.max(0, Math.floor(m.warmup!)) : 0;
       break;
     case 'speed':
       speed = m.speed;
@@ -71,5 +81,5 @@ scope.onmessage = (e: MessageEvent<ToWorker>) => {
       frame(m.buf);
       break;
   }
-  if (speed === 'max' && !running && sim) { running = true; setTimeout(freeRun, 0); }
+  if (shouldFreeRun() && !running) { running = true; setTimeout(freeRun, 0); }
 };

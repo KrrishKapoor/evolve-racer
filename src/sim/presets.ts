@@ -56,7 +56,7 @@ const TECHNICAL = [
 ];
 
 const SPECS: { id: string; name: string; points: () => number[] }[] = [
-  { id: 'meridian', name: 'Meridian', points: () => chaikin(GP, 2) },
+  { id: 'meridian', name: 'Meridian', points: () => chaikin(GP.map((v, i) => i % 2 === 0 ? v * 1.4 : v), 2) },
   { id: 'oval', name: 'Oval', points: () => stadium(560, 220) },
   { id: 'citadel', name: 'Citadel', points: () => chaikin(TECHNICAL, 2) },
   { id: 'coastline', name: 'Coastline', points: () => polar((t) => 1 + 0.22 * Math.sin(3 * t) + 0.12 * Math.cos(2 * t + 0.6)) },

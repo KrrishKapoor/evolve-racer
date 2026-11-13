@@ -4,11 +4,13 @@ import { PRESETS } from './presets';
 import { TRACK_EXTENT, type Track } from './types';
 
 function crosses(ax: number, ay: number, bx: number, by: number, cx: number, cy: number, dx: number, dy: number) {
+  if (Math.max(ax, bx) < Math.min(cx, dx) || Math.max(cx, dx) < Math.min(ax, bx) ||
+    Math.max(ay, by) < Math.min(cy, dy) || Math.max(cy, dy) < Math.min(ay, by)) return false;
   const d1 = (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
   const d2 = (bx - ax) * (dy - ay) - (by - ay) * (dx - ax);
   const d3 = (dx - cx) * (ay - cy) - (dy - cy) * (ax - cx);
   const d4 = (dx - cx) * (by - cy) - (dy - cy) * (bx - cx);
-  return d1 * d2 < 0 && d3 * d4 < 0;
+  return d1 * d2 <= 0 && d3 * d4 <= 0;
 }
 
 /** Any crossing among the closed polylines (each against itself and the others). */
@@ -35,6 +37,27 @@ function circle(r: number, count: number, cw = false): number[] {
   return pts;
 }
 
+function assertSmoothOffsets(t: Track): void {
+  for (let i = 0; i < t.n; i++) {
+    const a = (i + t.n - 1) % t.n, b = (i + 1) % t.n;
+    const ux = t.cx[i] - t.cx[a], uy = t.cy[i] - t.cy[a];
+    const vx = t.cx[b] - t.cx[i], vy = t.cy[b] - t.cy[i];
+    const radius = Math.hypot(ux, uy) * Math.hypot(vx, vy) * Math.hypot(ux + vx, uy + vy) /
+      (2 * Math.abs(ux * vy - uy * vx));
+    expect(radius, `local radius at ${i}`).toBeGreaterThan(t.halfWidth * 1.99);
+    for (const [x, y] of [[t.lx, t.ly], [t.rx, t.ry]]) {
+      const wx = x[b] - x[i], wy = y[b] - y[i];
+      const px = x[i] - x[a], py = y[i] - y[a];
+      // Every offset segment must advance along the centreline, never fold back.
+      expect(wx * vx + wy * vy, `offset direction at ${i}`).toBeGreaterThan(0);
+      expect(Math.hypot(wx, wy), `pinched wall at ${i}`).toBeGreaterThan(3);
+      expect(Math.abs(Math.atan2(px * wy - py * wx, px * wx + py * wy)), `wall turn at ${i}`).toBeLessThan(0.22);
+      expect(Math.hypot(x[i] - t.cx[i], y[i] - t.cy[i])).toBeCloseTo(t.halfWidth, 3);
+    }
+  }
+  expect(wallsCross(t)).toBe(false);
+}
+
 test('presets are closed, normalised and have clean walls', () => {
   expect(PRESETS.length).toBeGreaterThanOrEqual(4);
   for (const { id, track: t } of PRESETS) {
@@ -44,7 +67,32 @@ test('presets are closed, normalised and have clean walls', () => {
     expect(close, id).toBeLessThan(12);
     const w = Math.max(...t.cx) - Math.min(...t.cx), h = Math.max(...t.cy) - Math.min(...t.cy);
     expect(Math.max(w, h), id).toBeCloseTo(TRACK_EXTENT, 0);
-    expect(wallsCross(t), id).toBe(false);
+    assertSmoothOffsets(t);
+  }
+});
+
+test('Meridian has the wide stage proportions', () => {
+  const t = PRESETS.find((p) => p.id === 'meridian')!.track;
+  expect((t.maxX - t.minX) / (t.maxY - t.minY)).toBeGreaterThan(1.5);
+  expect((t.maxX - t.minX) / (t.maxY - t.minY)).toBeLessThan(1.7);
+});
+
+test('polygonal freehand rectangles, triangles and concave loops round into smooth roads', () => {
+  const polygons = [
+    [[0, 0], [400, 0], [400, 250], [0, 250]],
+    [[0, 300], [200, 0], [400, 300]],
+    [[0, 0], [150, 0], [150, 200], [400, 200], [400, 350], [0, 350]],
+    [[0, 0], [120, 0], [120, 250], [280, 250], [280, 0], [400, 0], [400, 350], [0, 350]],
+  ];
+  for (const polygon of polygons) for (const samples of [3, 30]) {
+    const points: number[] = [];
+    for (let i = 0; i < polygon.length; i++) {
+      const a = polygon[i], b = polygon[(i + 1) % polygon.length];
+      for (let j = 0; j < samples; j++) points.push(a[0] + (b[0] - a[0]) * j / samples, a[1] + (b[1] - a[1]) * j / samples);
+    }
+    const t = buildTrack(points);
+    expect(t).not.toBeNull();
+    assertSmoothOffsets(t!);
   }
 });
 

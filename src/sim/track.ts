@@ -1,7 +1,8 @@
 import { TRACK_EXTENT, TRACK_HALF_WIDTH, type Track } from './types';
 
 const SPACING = 8; // world units between centreline samples
-const MIN_RADIUS = 1.3 * TRACK_HALF_WIDTH;
+// Leave room for a rounded inner wall, not just a mathematically valid offset.
+const MIN_RADIUS = 2 * TRACK_HALF_WIDTH;
 
 type Loop = { x: number[]; y: number[] };
 
@@ -70,14 +71,17 @@ function segmentsCross(
   ax: number, ay: number, bx: number, by: number,
   cx: number, cy: number, dx: number, dy: number,
 ): boolean {
+  if (Math.max(ax, bx) < Math.min(cx, dx) || Math.max(cx, dx) < Math.min(ax, bx) ||
+    Math.max(ay, by) < Math.min(cy, dy) || Math.max(cy, dy) < Math.min(ay, by)) return false;
   const d1 = (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
   const d2 = (bx - ax) * (dy - ay) - (by - ay) * (dx - ax);
   const d3 = (dx - cx) * (ay - cy) - (dy - cy) * (ax - cx);
   const d4 = (dx - cx) * (by - cy) - (dy - cy) * (bx - cx);
-  return d1 * d2 < 0 && d3 * d4 < 0;
+  // Include touches and collinear overlap; a zero-width pinch is not a road.
+  return d1 * d2 <= 0 && d3 * d4 <= 0;
 }
 
-function selfIntersects(x: number[], y: number[]): boolean {
+function selfIntersects(x: ArrayLike<number>, y: ArrayLike<number>): boolean {
   const n = x.length;
   for (let i = 0; i < n; i++) {
     const i2 = (i + 1) % n;
@@ -134,37 +138,31 @@ export function buildTrack(points: ArrayLike<number>): Track | null {
   let p = resample(raw, Math.round(perimeter(raw) / SPACING));
   if (selfIntersects(p.x, p.y)) return null;
 
-  // Smooth: a few global passes to remove hand jitter, then local passes only
-  // where the radius is still too tight, so the overall shape survives.
+  // Smooth at the actual sampling scale. A wider curvature stencil can hide a
+  // sharp vertex that folds the offset wall. Uniform passes avoid seams where
+  // selective smoothing meets an untouched part of the stroke.
   const k = Math.max(2, Math.round(TRACK_HALF_WIDTH / SPACING));
   let ok = false;
   for (let iter = 0; iter < 400; iter++) {
-    const n = p.x.length;
-    const r: number[] = [];
-    let minR = Infinity;
-    for (let i = 0; i < n; i++) {
-      r.push(radiusAt(p, i, k));
-      if (r[i] < minR) minR = r[i];
+    // Validate the resampled result, including the closing segment. Resampling
+    // after accepting curvature can otherwise introduce a new tight vertex.
+    if (iter % 8 === 0) {
+      normalise(p);
+      p = resample(p, Math.round(perimeter(p) / SPACING));
+      let minR = Infinity;
+      for (let i = 0; i < p.x.length; i++) minR = Math.min(minR, radiusAt(p, i, 1));
+      if (iter >= 8 && minR >= MIN_RADIUS) { ok = true; break; }
     }
-    if (iter >= 4 && minR > MIN_RADIUS) { ok = true; break; }
-    const nx = p.x.slice(), ny = p.y.slice();
+    const n = p.x.length;
+    const nx: number[] = [], ny: number[] = [];
     for (let i = 0; i < n; i++) {
-      let tight = iter < 4;
-      for (let d = -k; d <= k && !tight; d++) if (r[(i + d + n) % n] < MIN_RADIUS * 1.15) tight = true;
-      if (!tight) continue;
       const a = (i - 1 + n) % n, c = (i + 1) % n;
       nx[i] = 0.25 * p.x[a] + 0.5 * p.x[i] + 0.25 * p.x[c];
       ny[i] = 0.25 * p.y[a] + 0.5 * p.y[i] + 0.25 * p.y[c];
     }
     p = { x: nx, y: ny };
-    if (iter % 8 === 7) {
-      normalise(p);
-      p = resample(p, Math.round(perimeter(p) / SPACING));
-    }
   }
   if (!ok) return null;
-  normalise(p);
-  p = resample(p, Math.round(perimeter(p) / SPACING));
   const n = p.x.length;
   if (n < 40 || selfIntersects(p.x, p.y)) return null;
 
@@ -203,7 +201,15 @@ export function buildTrack(points: ArrayLike<number>): Track | null {
     cx[i] = p.x[(i + s0) % n];
     cy[i] = p.y[(i + s0) % n];
   }
-  return makeTrack(cx, cy);
+  const track = makeTrack(cx, cy);
+  // Curvature alone cannot catch collisions between distant parts of a loop.
+  if (selfIntersects(track.lx, track.ly) || selfIntersects(track.rx, track.ry)) return null;
+  for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+    const a = (i + 1) % n, b = (j + 1) % n;
+    if (segmentsCross(track.lx[i], track.ly[i], track.lx[a], track.ly[a],
+      track.rx[j], track.ry[j], track.rx[b], track.ry[b])) return null;
+  }
+  return track;
 }
 
 /** Derive walls, arc lengths, bounds and spawn pose from a closed centreline. */

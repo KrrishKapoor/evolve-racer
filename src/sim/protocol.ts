@@ -4,7 +4,7 @@ import { GENOME_SIZE, NEURON_COUNT, RAY_COUNT, type GenerationStats, type SimSpe
 export const frameLength = (count: number) => count * 4 + RAY_COUNT + NEURON_COUNT + GENOME_SIZE;
 
 export type ToWorker =
-  | { type: 'reset'; epoch: number; track: Track; population: number; seed: number }
+  | { type: 'reset'; epoch: number; track: Track; population: number; seed: number; warmup?: number }
   | { type: 'speed'; speed: SimSpeed }
   | { type: 'inspect'; index: number }
   | { type: 'frame'; buf: Float32Array };

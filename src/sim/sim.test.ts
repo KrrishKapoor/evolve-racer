@@ -84,14 +84,52 @@ test('inspect and pick', () => {
   expect(sim.snapshot().detail).toBeNull();
 });
 
-test('evolution finishes a lap and keeps improving (Meridian, 400 cars)', () => {
-  const stats = run(1, 15, 400);
+test('a crashed inspected car reports zero speed and stays in place while fading', () => {
+  const sim = createSimulation(track, { population: 200, seed: 3 });
+  for (let s = 0; s < 30; s++) sim.step();
+  const moving: number[] = [];
+  for (let i = 0; i < sim.population; i++) {
+    sim.inspect(i);
+    if (sim.snapshot().detail!.speed > 0.05) moving.push(i);
+  }
+  expect(moving.length).toBeGreaterThan(0);
+  for (let s = 0; s < 90; s++) {
+    expect(sim.step()).toBeNull();
+    const snap = sim.snapshot();
+    const crashed = moving.find((i) => snap.fade[i] > 0 && snap.fade[i] < 1);
+    if (crashed === undefined) continue;
+    sim.inspect(crashed);
+    const { x, y, speed, alive } = sim.snapshot().detail!;
+    expect(alive).toBe(false);
+    expect(speed).toBe(0);
+    const fade = snap.fade[crashed];
+    for (let i = 0; i < 4; i++) expect(sim.step()).toBeNull();
+    expect(sim.snapshot().detail).toMatchObject({ x, y, speed: 0, alive: false });
+    expect(sim.snapshot().fade[crashed]).toBeLessThan(fade);
+    return;
+  }
+  throw new Error('expected a moving car to crash');
+});
+
+test.each([1, 7, 42])('early generations cull crawlers without waiting twenty seconds (seed %s)', (seed) => {
+  const sim = createSimulation(track, { population: 1000, seed });
+  let steps = 0, generation = 0;
+  while (generation < 3) {
+    steps++;
+    const s = sim.step();
+    expect(steps * DT).toBeLessThan(10);
+    if (s) { generation++; steps = 0; }
+  }
+});
+
+test('evolution finishes a lap and keeps improving (Meridian, 1000 cars)', () => {
+  const stats = run(1, 20, 1000);
   const firstLap = stats.findIndex((s) => s.bestLap > 0);
   expect(firstLap).toBeGreaterThanOrEqual(0);
   expect(firstLap).toBeLessThan(15);
   for (let g = 1; g < stats.length; g++) expect(stats[g].bestFitness).toBeGreaterThanOrEqual(stats[g - 1].bestFitness - 1e-6);
-  expect(stats[14].bestLapEver).toBeLessThan(stats[firstLap].bestLap);
-  expect(stats[14].bestLine.length % 3).toBe(0);
+  expect(stats[19].bestLapEver).toBeLessThan(stats[firstLap].bestLap);
+  expect(stats[19].bestLine.length % 3).toBe(0);
 }, 60000);
 
 test('evolved line beats the best possible centreline lap (Oval, 600 cars)', async () => {

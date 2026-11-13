@@ -18,6 +18,16 @@ export const GRIP = 600;
 
 const STALL_TIME = 2; // seconds without STALL_GAIN progress => dead
 const STALL_GAIN = 50;
+// Minimum pace: after PACE_GRACE seconds a car's average speed since the start must stay above
+// MIN_PACE * TOP_SPEED, so slow crawlers die instead of holding a generation open.
+const PACE_GRACE = 1.5;
+const MIN_PACE = 0.3;
+// Trim generations with a handful of survivors, but give the best discovered
+// driver time to reach its previous frontier and explore beyond it.
+const FEW_FRACTION = 0.01;
+const FEW_MIN = 3;
+const FEW_GRACE = 2;
+const NEAR_LAP = 0.9;
 const BACKWARD = 30; // units behind best progress => dead
 const FADE_TIME = 0.5;
 const LINE_EVERY = 4; // steps between best-line samples
@@ -177,7 +187,8 @@ export function createDriver(track: Track, count: number): Driver {
     }
     c.progress[i] = p;
     if (p > c.markProgress[i] + STALL_GAIN) { c.markProgress[i] = p; c.markTime[i] = now; }
-    if (d > limit2 || p < c.maxProgress[i] - BACKWARD || now - c.markTime[i] > STALL_TIME) c.alive[i] = 0;
+    if (d > limit2 || p < c.maxProgress[i] - BACKWARD || now - c.markTime[i] > STALL_TIME ||
+      (now > PACE_GRACE && c.maxProgress[i] < MIN_PACE * TOP_SPEED * now)) c.alive[i] = 0;
   };
   return { cars, stepCar };
 }
@@ -222,6 +233,9 @@ export function createSimulation(track: Track, opts: SimOptions): Simulation {
   let time = 0;
   let alive = pop;
   let firstLap = 0; // sim time when the first car of this generation finished
+  let endAt = 0; // early-end deadline once only a few cars are left
+  let exploreUntil = 0;
+  const few = Math.max(FEW_MIN, Math.ceil(pop * FEW_FRACTION));
   let bestLapEver = 0;
   let bestLine: Float32Array = new Float32Array(0);
   let bestFitnessEver = -Infinity;
@@ -263,7 +277,11 @@ export function createSimulation(track: Track, opts: SimOptions): Simulation {
     if (bestLap > 0 && (bestLapEver === 0 || bestLap < bestLapEver)) bestLapEver = bestLap;
     if (bestFitness > bestFitnessEver || bestLine.length === 0) {
       bestFitnessEver = bestFitness;
-      bestLine = recordLine(track, genomes, champ * GENOME_SIZE, cars.lapTime[champ] > 0 ? cars.lapTime[champ] + 1 : timeCap);
+      bestLine = recordLine(track, genomes, champ * GENOME_SIZE, cars.lapTime[champ] > 0 ? cars.lapTime[champ] + 1 : time);
+      if (bestLap === 0) {
+        const recordedTime = (bestLine.length / 3 - 1) * LINE_EVERY * DT;
+        exploreUntil = Math.max(exploreUntil, recordedTime + FEW_GRACE);
+      }
     }
     const stats: GenerationStats = {
       generation,
@@ -296,6 +314,7 @@ export function createSimulation(track: Track, opts: SimOptions): Simulation {
     time = 0;
     alive = pop;
     firstLap = 0;
+    endAt = 0;
     spawn(cars, track);
     return stats;
   }
@@ -316,7 +335,16 @@ export function createSimulation(track: Track, opts: SimOptions): Simulation {
     time += DT;
     alive = count;
     if (count === 0 || time >= timeCap || (firstLap > 0 && time > firstLap * 1.15)) return endGeneration();
+    if (firstLap === 0 && count < few) {
+      if (endAt === 0) endAt = Math.max(time + FEW_GRACE, exploreUntil);
+      else if (time >= endAt && !nearLap()) return endGeneration();
+    }
     return null;
+  }
+
+  function nearLap(): boolean {
+    for (let i = 0; i < pop; i++) if (cars.alive[i] && cars.maxProgress[i] > NEAR_LAP * L) return true;
+    return false;
   }
 
   function snapshot(): Snapshot {
@@ -335,7 +363,7 @@ export function createSimulation(track: Track, opts: SimOptions): Simulation {
       detail.x = cars.x[inspected];
       detail.y = cars.y[inspected];
       detail.angle = cars.angle[inspected];
-      detail.speed = cars.speed[inspected] / TOP_SPEED;
+      detail.speed = detail.alive ? cars.speed[inspected] / TOP_SPEED : 0;
       snap.detail = detail;
     } else snap.detail = null;
     return snap;

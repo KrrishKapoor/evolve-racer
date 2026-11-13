@@ -132,9 +132,9 @@ export type SimSpeed = 0 | 1 | 4 | 'max';
 export interface SimClient {
   /** Latest snapshot received, or null before the first one. Valid until the next tick() resolves. */
   readonly latest: Snapshot | null;
-  /** Replace the circuit and restart evolution from generation 0. */
+  /** Replace the circuit and restart evolution from generation 1, without warmup. */
   setTrack(track: Track): void;
-  /** Restart evolution on the current track with a new population size. */
+  /** Restart evolution at generation 1 with a new population size, without warmup. */
   setPopulation(population: number): void;
   setSpeed(speed: SimSpeed): void;
   inspect(index: number): void;
