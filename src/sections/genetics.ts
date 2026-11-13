@@ -27,7 +27,7 @@ const COLS: number[][] = [];
 
 const PHASES = ['Rank', 'Select', 'Crossover', 'Mutate'] as const;
 const CAPTIONS = [
-  'Six genomes, ranked by how far their car drove.',
+  'Six genomes, ranked by fitness: how far around the lap their car got.',
   'Two parents are picked. Fitter genomes win the draw more often.',
   'The child takes each neuron whole from one parent or the other.',
   'A few genes are nudged at random. Most mutations hurt; a few help.',
@@ -142,9 +142,9 @@ export function mountGenetics(fig: HTMLElement): void {
   const gridW = (c: number) => COLS.length * c + (COLS.length - 1 + 4) * Math.max(1, c * 0.18);
   const gridH = (c: number) => ROWS * c + (ROWS - 1) * Math.max(1, c * 0.18);
 
-  function label(text: string, x: number, y: number, color: string, align: CanvasTextAlign = 'left'): void {
+  function label(text: string, x: number, y: number, color: string, align: CanvasTextAlign = 'left', size = 11): void {
     const ctx = s.ctx;
-    ctx.font = `500 11px ${tk.font}`;
+    ctx.font = `500 ${size}px ${tk.font}`;
     ctx.fillStyle = color;
     ctx.textAlign = align;
     ctx.textBaseline = 'alphabetic';
@@ -228,7 +228,7 @@ export function mountGenetics(fig: HTMLElement): void {
       const shown = Math.round(reveal * COLS.length);
       for (let k = 0; k < shown; k++) {
         const x = cx + k * (big + gap) + (k >= 8 ? gap * 2 : 0) + (k >= 14 ? gap * 2 : 0);
-        label(fromA[k] ? 'A' : 'B', x + big / 2, cy + bh + 13, tk.ink3, 'center');
+        label(fromA[k] ? 'A' : 'B', x + big / 2, cy + bh + 13, tk.ink3, 'center', Math.min(11, big * 1.05));
       }
     }
   }

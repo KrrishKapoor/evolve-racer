@@ -31,14 +31,18 @@ export function mountRacingLine(fig: HTMLElement): void {
   const lapEl = el('span', 'xs-num');
   const firstEl = el('span', 'xs-num');
   const readout = el('div', 'xs-readout');
-  readout.append(pair('Generation', genEl), pair('First generation', firstEl), pair('This line', lapEl));
+  const deltaEl = el('span', 'xs-num');
+  const firstPair = pair('Generation 1', firstEl);
+  const firstLabel = firstPair.firstChild as HTMLElement;
+  readout.append(pair('Generation', genEl), firstPair, pair('This line', lapEl), pair('Time saved', deltaEl));
   const restart = el('button', 'xs-btn', 'Start over');
   controls.append(range, restart);
   const legend = el('div', 'xs-legend');
   legend.innerHTML =
-    '<span class="xs-key xs-key--first"></span><span>Generation 1</span>' +
+    '<span class="xs-key xs-key--first"></span><span class="xs-key-first">Generation 1</span>' +
     '<span class="xs-key xs-key--slow"></span><span>Slow</span>' +
     '<span class="xs-key xs-key--fast"></span><span>Fast</span>';
+  const keyLabel = legend.querySelector('.xs-key-first') as HTMLElement;
   fig.append(canvas, legend, trace, readout, controls);
 
   range.addEventListener('input', () => {
@@ -109,7 +113,7 @@ export function mountRacingLine(fig: HTMLElement): void {
   runWhileVisible(fig, () => {
     if (recs.length < MAX_GEN) {
       const t0 = performance.now();
-      while (performance.now() - t0 < 7) {
+      while (performance.now() - t0 < 2.5) {
         const st = sim.step();
         if (st) {
           onStats(st);
@@ -127,7 +131,8 @@ export function mountRacingLine(fig: HTMLElement): void {
     fitView(view, s, track.minX, track.minY, track.maxX, track.maxY, Math.min(28, w * 0.05));
     ctx.clearRect(0, 0, w, h);
     drawTrack(ctx, track, view, tk);
-    const first = recs[0];
+    // Baseline: the first generation that finished a lap, so both lines cover the whole circuit.
+    const first = recs.find((r) => r.lap > 0) ?? recs[0];
     const cur = recs[pick < 0 ? recs.length - 1 : pick];
     if (first) strokeLine(first.line, false);
     if (cur && cur !== first) strokeLine(cur.line, true);
@@ -136,6 +141,9 @@ export function mountRacingLine(fig: HTMLElement): void {
     genEl.textContent = cur ? String(cur.gen) : '0';
     firstEl.textContent = first ? describe(first) : '–';
     lapEl.textContent = cur ? describe(cur) : '–';
+    firstLabel.textContent = first ? `Generation ${first.gen}` : 'Generation 1';
+    keyLabel.textContent = firstLabel.textContent;
+    deltaEl.textContent = first && cur && first.lap > 0 && cur.lap > 0 ? `${(first.lap - cur.lap).toFixed(2)} s` : '–';
 
     drawTrace(first, cur);
     if (scrub >= 0) {
@@ -177,12 +185,22 @@ export function mountRacingLine(fig: HTMLElement): void {
       return;
     }
     ctx.lineWidth = 2.5;
+    // Colour by speed relative to this line's own range, so braking zones show even when the car is fast.
+    let lo = 1;
+    let hi = 0;
+    for (let i = 0; i < n; i++) {
+      lo = Math.min(lo, line[i * 3 + 2]);
+      hi = Math.max(hi, line[i * 3 + 2]);
+    }
+    // Ignore the standing start when finding the slowest point.
+    lo = Math.max(lo, hi * 0.5);
+    const k = 1 / Math.max(0.05, hi - lo);
     // One path per speed bucket keeps this to a dozen strokes.
     for (let b = 0; b < BUCKETS; b++) {
       ctx.beginPath();
       for (let i = 1; i < n; i++) {
         const sp = (line[i * 3 + 2] + line[i * 3 - 1]) / 2;
-        if (Math.min(BUCKETS - 1, Math.floor(sp * BUCKETS)) !== b) continue;
+        if (Math.max(0, Math.min(BUCKETS - 1, Math.floor((sp - lo) * k * BUCKETS))) !== b) continue;
         ctx.moveTo(view.ox + line[i * 3 - 3] * view.scale, view.oy + line[i * 3 - 2] * view.scale);
         ctx.lineTo(view.ox + line[i * 3] * view.scale, view.oy + line[i * 3 + 1] * view.scale);
       }
