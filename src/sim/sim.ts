@@ -113,7 +113,7 @@ export interface Driver {
   stepCar(i: number, genome: Float32Array, gOff: number, time: number, rays: Float32Array, act: Float32Array): void;
 }
 
-function createDriver(track: Track, count: number): Driver {
+export function createDriver(track: Track, count: number): Driver {
   const cars = createCars(count);
   const cast = createRaycaster(track);
   const { dist2, getT } = makeTrackHelpers(track);
@@ -310,6 +310,7 @@ export function createSimulation(track: Track, opts: SimOptions): Simulation {
       const isDetail = i === inspected;
       driver.stepCar(i, genomes, i * GENOME_SIZE, time, isDetail ? detailRays : rays, isDetail ? detailAct : act);
       if (cars.alive[i]) count++;
+      else cars.fade[i] = 1 - DT / FADE_TIME; // so fade < 1 exactly when crashed
       if (firstLap === 0 && cars.lapTime[i] > 0) firstLap = cars.lapTime[i];
     }
     time += DT;
@@ -347,12 +348,12 @@ export function createSimulation(track: Track, opts: SimOptions): Simulation {
     // Fill rays and activations now so a paused sim still shows something real.
     const x = cars.x[inspected], y = cars.y[inspected], a = cars.angle[inspected];
     inspectCast(x, y, a, detailRays);
-    const inputs = new Float32Array(NET_LAYERS[0]);
-    inputs.set(detailRays);
-    inputs[RAY_COUNT] = cars.speed[inspected] / TOP_SPEED;
-    forward(genomes, inspected * GENOME_SIZE, inputs, detailAct);
+    inspectInputs.set(detailRays);
+    inspectInputs[RAY_COUNT] = cars.speed[inspected] / TOP_SPEED;
+    forward(genomes, inspected * GENOME_SIZE, inspectInputs, detailAct);
   }
   const inspectCast = createRaycaster(track);
+  const inspectInputs = new Float32Array(NET_LAYERS[0]);
 
   function pick(x: number, y: number, radius: number): number {
     let best = -1, bestD = radius * radius, bestAlive = false;

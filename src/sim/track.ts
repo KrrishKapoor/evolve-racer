@@ -105,6 +105,19 @@ export function buildTrack(points: ArrayLike<number>): Track | null {
     raw.y.push(y);
   }
   if (raw.x.length < 8) return null;
+  // Drawing past the start leaves a tail that overlaps the beginning: cut it at
+  // the point of the last third that comes closest to where the stroke began.
+  {
+    const m = raw.x.length;
+    let cut = m - 1, best = Infinity;
+    for (let i = Math.floor(m * 0.66); i < m; i++) {
+      const d = Math.hypot(raw.x[i] - raw.x[0], raw.y[i] - raw.y[0]);
+      if (d < best) { best = d; cut = i; }
+    }
+    raw.x.length = cut + 1;
+    raw.y.length = cut + 1;
+    if (cut + 1 < 8) return null;
+  }
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
   for (let i = 0; i < raw.x.length; i++) {
     minX = Math.min(minX, raw.x[i]); maxX = Math.max(maxX, raw.x[i]);

@@ -30,10 +30,12 @@ function centrelineLap(t: Track): number {
   return time;
 }
 
-test.skipIf(!process.env.BENCH)('bench', () => {
-  const gens = Number(process.env.GENS ?? 30);
+const env = (globalThis as { process?: { env: Record<string, string | undefined> } }).process?.env ?? {};
+
+test.skipIf(!env.BENCH)('bench', () => {
+  const gens = Number(env.GENS ?? 30);
   for (const p of PRESETS) {
-    const sim = createSimulation(p.track, { population: 1000, seed: Number(process.env.SEED ?? 1) });
+    const sim = createSimulation(p.track, { population: 1000, seed: Number(env.SEED ?? 1) });
     // Cost with all 1000 cars alive: the first 60 steps of generation 1.
     let a = performance.now();
     for (let i = 0; i < 60; i++) sim.step();
