@@ -39,10 +39,12 @@ export function createRaycaster(track: Track): (x: number, y: number, angle: num
   const fill = start.slice(0, cellCount);
   for (let s = 0; s < segCount; s++) forEachCell(s, (c) => { items[fill[c]++] = s; });
 
+  const rayCos = Float64Array.from(RAY_ANGLES, Math.cos), raySin = Float64Array.from(RAY_ANGLES, Math.sin);
   return (x, y, angle, out) => {
+    const ch = Math.cos(angle) * RAY_RANGE, sh = Math.sin(angle) * RAY_RANGE;
     for (let k = 0; k < RAY_COUNT; k++) {
-      const a = angle + RAY_ANGLES[k];
-      const rdx = Math.cos(a) * RAY_RANGE, rdy = Math.sin(a) * RAY_RANGE;
+      // Heading rotated by the ray's fixed offset; avoids two trig calls per ray.
+      const rdx = ch * rayCos[k] - sh * raySin[k], rdy = sh * rayCos[k] + ch * raySin[k];
       // DDA over cells, in units of t (0..1 along the ray).
       let cx = Math.floor((x - ox) / CELL), cy = Math.floor((y - oy) / CELL);
       const stepX = rdx > 0 ? 1 : -1, stepY = rdy > 0 ? 1 : -1;
