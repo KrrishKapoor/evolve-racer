@@ -48,6 +48,13 @@ const WEIGHT_FULL = 1.6; // |weight| that gets the widest stroke
 const SIGNAL_FULL = 1.2; // |weight * activation| that gets full opacity
 const TAU = 0.09; // display smoothing time constant, seconds
 
+// Signed two-decimal labels, prebuilt so hover readouts never allocate.
+const VALUE_LABEL: string[] = [];
+for (let i = -100; i <= 100; i++) {
+  const v = Math.abs(i) / 100;
+  VALUE_LABEL.push((i < 0 ? '\u2212' : i > 0 ? '+' : '') + v.toFixed(2));
+}
+
 interface Theme {
   accent: string;
   cool: string;
@@ -90,6 +97,8 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
   let h = 0;
   let dpr = 1;
   let r = 5; // neuron radius
+  let inset = 8;
+  let hovered = -1;
   const colX = new Float32Array(LAYERS);
   let barX = 0;
   let barW = 0;
@@ -113,11 +122,13 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
     if (canvas.height !== bh) canvas.height = bh;
     setFonts();
 
-    const top = 22; // room for column labels
-    const bottom = 8;
+    // Inset so the drawing breathes even when the canvas sits flush on a filled backdrop.
+    inset = Math.max(6, Math.min(16, w * 0.035));
+    const top = inset + 18; // room for column labels
+    const bottom = inset + 4;
     const glyphW = 26;
     const right = Math.max(66, Math.min(110, w * 0.27));
-    const x0 = glyphW + 6;
+    const x0 = inset + glyphW + 2;
     const x1 = w - right;
     for (let l = 0; l < LAYERS; l++) colX[l] = x0 + ((x1 - x0) * l) / (LAYERS - 1);
     const maxN = NET_LAYERS[0];
@@ -136,7 +147,7 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
       }
     }
     barX = x1 + r + 10;
-    barW = w - barX - 4;
+    barW = w - barX - inset;
   }
 
   function bucketEdges() {
@@ -146,7 +157,9 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
       const mag = Math.abs(wt);
       const wl = Math.min(W_LEVELS - 1, Math.floor((mag / WEIGHT_FULL) * W_LEVELS));
       const sig = Math.min(1, Math.abs(wt * shown[edgeSrc[e]]) / SIGNAL_FULL);
-      const al = Math.min(A_LEVELS - 1, Math.floor(Math.sqrt(sig) * A_LEVELS));
+      let al = Math.min(A_LEVELS - 1, Math.floor(Math.sqrt(sig) * A_LEVELS));
+      // Hover focus: connected edges stay visible, the rest drop to the ghost level.
+      if (hovered >= 0) al = edgeSrc[e] === hovered || edgeDst[e] === hovered ? Math.max(1, al) : 0;
       // Index so iterating buckets in order goes dim to bright.
       const b = (al * 2 + (wt < 0 ? 1 : 0)) * W_LEVELS + wl;
       bucketOf[e] = b;
@@ -172,7 +185,7 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
       const neg = ((b / W_LEVELS) | 0) % 2 === 1;
       const al = (b / (2 * W_LEVELS)) | 0;
       ctx.strokeStyle = neg ? theme.cool : theme.accent;
-      ctx.globalAlpha = 0.045 + 0.9 * Math.pow(al / (A_LEVELS - 1), 1.6);
+      ctx.globalAlpha = al === 0 && hovered >= 0 ? 0.02 : 0.045 + 0.9 * Math.pow(al / (A_LEVELS - 1), 1.6);
       ctx.lineWidth = 0.6 + wl * 0.75;
       ctx.beginPath();
       for (let k = s; k < t; k++) {
@@ -265,7 +278,7 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
     ctx.fillStyle = theme.ink3;
     ctx.textBaseline = 'alphabetic';
     ctx.textAlign = 'center';
-    const y = 10;
+    const y = inset + 6;
     ctx.fillText('IN', colX[0], y);
     ctx.fillText('HIDDEN', (colX[1] + colX[2]) / 2, y);
     ctx.textAlign = 'left';
@@ -307,6 +320,21 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
     drawBar(ny[OUT_BASE + 1] + 2, thr, theme.accent, theme.cool, false);
   }
 
+  function drawHover() {
+    if (hovered < 0) return;
+    const v = Math.max(-1, Math.min(1, shown[hovered]));
+    ctx.font = labelFont;
+    ctx.fillStyle = theme.ink;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(VALUE_LABEL[Math.round(v * 100) + 100], nx[hovered], ny[hovered] - r - 4);
+    ctx.strokeStyle = theme.ink;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(nx[hovered], ny[hovered], r + 2.5, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
   function draw() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
@@ -316,6 +344,7 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
     drawInputGlyphs();
     drawLabels();
     drawOutputs();
+    drawHover();
   }
 
   function frame(now: number) {
@@ -344,6 +373,34 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
     setFonts();
     if (visible) draw();
   }
+
+  // Mouse hover only: touch keeps scrolling the page, and taps belong to the host.
+  function onMove(ev: PointerEvent) {
+    if (ev.pointerType === 'touch') return;
+    const rect = canvas.getBoundingClientRect();
+    const px = ev.clientX - rect.left;
+    const py = ev.clientY - rect.top;
+    let best = -1;
+    let bestD = (r * 2.4) ** 2;
+    for (let k = 0; k < NEURON_COUNT; k++) {
+      const d = (nx[k] - px) ** 2 + (ny[k] - py) ** 2;
+      if (d < bestD) {
+        bestD = d;
+        best = k;
+      }
+    }
+    if (best !== hovered) {
+      hovered = best;
+      if (visible) draw();
+    }
+  }
+  function onLeave() {
+    if (hovered < 0) return;
+    hovered = -1;
+    if (visible) draw();
+  }
+  canvas.addEventListener('pointermove', onMove);
+  canvas.addEventListener('pointerleave', onLeave);
 
   const ro = new ResizeObserver((entries) => {
     const box = entries[entries.length - 1].contentRect;
@@ -379,6 +436,8 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
       destroyed = true;
       if (raf) cancelAnimationFrame(raf);
       ro.disconnect();
+      canvas.removeEventListener('pointermove', onMove);
+      canvas.removeEventListener('pointerleave', onLeave);
       io.disconnect();
       mq.removeEventListener('change', retheme);
       window.removeEventListener('themechange', retheme);
