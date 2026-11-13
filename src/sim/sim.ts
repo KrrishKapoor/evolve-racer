@@ -17,7 +17,7 @@ const MAX_YAW = 4; // rad/s at low speed
 export const GRIP = 600;
 
 const STALL_TIME = 2; // seconds without STALL_GAIN progress => dead
-const STALL_GAIN = 20;
+const STALL_GAIN = 50;
 const BACKWARD = 30; // units behind best progress => dead
 const FADE_TIME = 0.5;
 const LINE_EVERY = 4; // steps between best-line samples
@@ -208,7 +208,7 @@ export function createSimulation(track: Track, opts: SimOptions): Simulation {
   const L = track.length;
   // Reference lap time for the bonus: a lap at top speed is the unbeatable bound.
   const refLap = L / TOP_SPEED;
-  const timeCap = Math.max(40, L / 40);
+  const timeCap = Math.max(30, L / 60);
 
   let genomes = new Float32Array(pop * GENOME_SIZE);
   let next = new Float32Array(pop * GENOME_SIZE);

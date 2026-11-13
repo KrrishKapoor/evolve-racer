@@ -27,6 +27,22 @@ function stadium(straight: number, radius: number): number[] {
   return out;
 }
 
+/** Chaikin corner cutting on a closed polygon, so hand-laid presets flow. */
+function chaikin(pts: number[], iterations: number): number[] {
+  let p = pts;
+  for (let it = 0; it < iterations; it++) {
+    const out: number[] = [];
+    const n = p.length / 2;
+    for (let i = 0; i < n; i++) {
+      const j = (i + 1) % n;
+      const ax = p[2 * i], ay = p[2 * i + 1], bx = p[2 * j], by = p[2 * j + 1];
+      out.push(0.75 * ax + 0.25 * bx, 0.75 * ay + 0.25 * by, 0.25 * ax + 0.75 * bx, 0.25 * ay + 0.75 * by);
+    }
+    p = out;
+  }
+  return p;
+}
+
 // Hand-laid control polygons, roughly 0..100. buildTrack rounds the corners.
 const GP = [
   10, 80, 30, 82, 50, 83, 60, 82, 64, 78, 68, 82, 74, 84, 86, 80, 93, 70, 92, 58,
@@ -40,9 +56,9 @@ const TECHNICAL = [
 ];
 
 const SPECS: { id: string; name: string; points: () => number[] }[] = [
-  { id: 'meridian', name: 'Meridian', points: () => GP },
+  { id: 'meridian', name: 'Meridian', points: () => chaikin(GP, 2) },
   { id: 'oval', name: 'Oval', points: () => stadium(560, 220) },
-  { id: 'citadel', name: 'Citadel', points: () => TECHNICAL },
+  { id: 'citadel', name: 'Citadel', points: () => chaikin(TECHNICAL, 2) },
   { id: 'coastline', name: 'Coastline', points: () => polar((t) => 1 + 0.22 * Math.sin(3 * t) + 0.12 * Math.cos(2 * t + 0.6)) },
 ];
 
