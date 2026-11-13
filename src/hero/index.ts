@@ -181,19 +181,25 @@ export function mountHero(root: HTMLElement): void {
   }
 
   const pt: [number, number] = [0, 0];
-  function localPoint(e: PointerEvent): [number, number] {
+  function localPoint(e: MouseEvent): [number, number] {
     const r = canvas.getBoundingClientRect();
     return toWorld(view, e.clientX - r.left, e.clientY - r.top, pt);
   }
 
+  // Drawing uses pointer events; picking uses click so a swipe on the stage still scrolls the page on phones.
+  let justDrew = false;
   canvas.addEventListener('pointerdown', (e) => {
+    justDrew = drawing;
+    if (!drawing) return;
     const [x, y] = localPoint(e);
-    if (drawing) {
-      canvas.setPointerCapture(e.pointerId);
-      stroke = [x, y];
-      toast.classList.remove('is-on');
-      return;
-    }
+    canvas.setPointerCapture(e.pointerId);
+    stroke = [x, y];
+    toast.classList.remove('is-on');
+  });
+
+  canvas.addEventListener('click', (e) => {
+    if (justDrew || drawing) return;
+    const [x, y] = localPoint(e);
     const snap = client.latest;
     if (!snap || speed === 'max') return;
     const i = pick(snap, x, y, 36 / view.s);
@@ -330,8 +336,15 @@ export function mountHero(root: HTMLElement): void {
     // Below about 0.6 px per world unit cars would vanish; keep them at least a few pixels long.
     const grow = Math.max(1, 5 / (CAR_LENGTH * view.s));
     g.fillStyle = palette.car;
+    // Wrecks stay as faint marks until the generation ends: the track shows where the population fails.
+    g.globalAlpha = 0.16;
+    g.beginPath();
+    for (let i = 0; i < snap.count; i++) {
+      if (snap.fade[i] <= 0) carPath(snap, i, grow);
+    }
+    g.fill();
     for (let b = 0; b < FADE_BUCKETS; b++) {
-      g.globalAlpha = (b + 0.5) / FADE_BUCKETS * 0.6;
+      g.globalAlpha = 0.16 + (b + 0.5) / FADE_BUCKETS * 0.44;
       g.beginPath();
       for (let i = 0; i < snap.count; i++) {
         const f = snap.fade[i];

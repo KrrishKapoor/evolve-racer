@@ -115,28 +115,28 @@ button {
 
 /* Hero */
 .hero {
-  padding: clamp(3rem, 7vw, 5rem) var(--gutter) 0;
+  padding: clamp(2rem, 4vw, 3rem) var(--gutter) 0;
   max-width: calc(var(--page) + 2 * var(--gutter));
   margin: 0 auto;
 }
 
 .hero-copy {
   text-align: center;
-  max-width: 48rem;
-  margin: 0 auto clamp(2rem, 4vw, 3rem);
+  margin: 0 auto clamp(1.5rem, 3vw, 2.25rem);
 }
 
 .hero h1 {
-  font-size: var(--t-display);
-  line-height: 1.02;
+  /* Sized so the headline is one line on a laptop and the stage starts well above the fold. */
+  font-size: clamp(2.5rem, 4.6vw, 4rem);
+  line-height: 1.04;
   letter-spacing: -0.035em;
   font-weight: 650;
   text-wrap: balance;
 }
 
 .lede {
-  margin: 1.25rem auto 0;
-  max-width: var(--measure);
+  margin: 1rem auto 0;
+  max-width: 40rem;
   font-size: var(--t-lead);
   line-height: 1.45;
   color: var(--ink-2);
