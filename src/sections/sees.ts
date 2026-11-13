@@ -2,7 +2,7 @@
 import { RAY_ANGLES, RAY_COUNT, RAY_RANGE, CAR_LENGTH, CAR_WIDTH } from '../sim/types';
 import { PRESETS } from '../sim/presets';
 import { createRaycaster } from '../sim/rays';
-import { createSurface, getTokens, runWhileVisible, el, drawTrack, touchCanvas, type View } from './canvas';
+import { capture, createSurface, getTokens, runWhileVisible, el, drawTrack, touchCanvas, type View } from './canvas';
 import { createBars } from './bars';
 
 export function mountSees(fig: HTMLElement): void {
@@ -35,7 +35,7 @@ export function mountSees(fig: HTMLElement): void {
   let downX = 0;
   let downLat = 0;
   canvas.addEventListener('pointerdown', (e) => {
-    canvas.setPointerCapture(e.pointerId);
+    capture(canvas, e.pointerId);
     held = true;
     downX = e.clientX;
     downLat = target;

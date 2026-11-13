@@ -1,5 +1,5 @@
 // A strip of labelled vertical bars with tabular readouts. Optionally draggable to set values.
-import { el } from './canvas';
+import { el, capture } from './canvas';
 
 export interface Bars {
   root: HTMLElement;
@@ -51,7 +51,7 @@ export function createBars(labels: string[], caption: string, onDrag?: (i: numbe
       const col = (e.target as HTMLElement).closest('.xs-bar');
       const i = cols.indexOf(col as HTMLElement);
       if (i < 0) return;
-      root.setPointerCapture(e.pointerId);
+      capture(root, e.pointerId);
       (bars as { dragging: number }).dragging = i;
       cols[i].classList.add('is-active');
       onDrag(i, valueAt(i, e.clientY));

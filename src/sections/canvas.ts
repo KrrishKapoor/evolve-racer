@@ -170,3 +170,12 @@ export function rgba(css: string): [number, number, number, number] {
   const m = v.match(/[\d.]+/g)!.map(Number);
   return [m[0], m[1], m[2], m[3] ?? 1];
 }
+
+/** Pointer capture can throw for pointers the browser no longer tracks; never let that abort a drag. */
+export function capture(t: Element, id: number): void {
+  try {
+    t.setPointerCapture(id);
+  } catch {
+    /* ignore */
+  }
+}

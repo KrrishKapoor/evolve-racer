@@ -27,8 +27,8 @@ const COLS: number[][] = [];
 
 const PHASES = ['Rank', 'Select', 'Crossover', 'Mutate'] as const;
 const CAPTIONS = [
-  'Six genomes, ranked by fitness: how far around the lap their car got.',
-  'Two parents are picked. Fitter genomes win the draw more often.',
+  'Six genomes, ranked by fitness. Each parent is the fitter of two genomes drawn at random.',
+  'Two parents are drawn. The fittest win more often, but not always, which keeps variety alive.',
   'The child takes each neuron whole from one parent or the other.',
   'A few genes are nudged at random. Most mutations hurt; a few help.',
 ];
@@ -188,7 +188,22 @@ export function mountGenetics(fig: HTMLElement): void {
     ctx.fillStyle = tk.hairline;
     ctx.fillRect(0, y0 - 6, w, 1);
     if (phase === 0) {
-      label('Fitter genomes are more likely to become parents.', w / 2, y0 + (h - y0) / 2, tk.ink3, 'center');
+      // Odds of winning a two-way tournament at each rank: (2(N - r) - 1) / N^2.
+      const bw0 = Math.min(w - 40, 420);
+      const x0 = (w - bw0) / 2;
+      const rowH = Math.min(26, (h - y0 - 40) / POP);
+      const yt = y0 + (h - y0 - rowH * POP - 18) / 2 + 18;
+      label('CHANCE OF WINNING A DRAW', x0, yt - 8, tk.ink3);
+      for (let i = 0; i < POP; i++) {
+        const p = (2 * (POP - i) - 1) / (POP * POP);
+        const y = yt + i * rowH;
+        label(`#${i + 1}`, x0, y + rowH * 0.62, i === 0 ? tk.accent : tk.ink3);
+        ctx.fillStyle = i === 0 ? tk.accent : tk.ink;
+        ctx.globalAlpha = i === 0 ? 1 : 0.7;
+        ctx.fillRect(x0 + 32, y + rowH * 0.25, (bw0 - 80) * p * (36 / 11), rowH * 0.5);
+        ctx.globalAlpha = 1;
+        label(`${Math.round(p * 100)}%`, x0 + bw0, y + rowH * 0.62, tk.ink2, 'right');
+      }
       return;
     }
     const big = Math.max(3, Math.min((narrow ? w : w / 3 - 24) / (COLS.length * 1.18 + 1), (h - y0 - (narrow ? 60 : 40)) / (ROWS * 1.18 * (narrow ? 2 : 1))));

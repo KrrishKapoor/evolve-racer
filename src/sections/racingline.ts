@@ -2,7 +2,7 @@
 import { PRESETS } from '../sim/presets';
 import { createSimulation } from '../sim/sim';
 import type { GenerationStats } from '../sim/types';
-import { createSurface, getTokens, onTheme, runWhileVisible, el, drawTrack, fitView, rgba, touchCanvas, type View } from './canvas';
+import { capture, createSurface, getTokens, onTheme, runWhileVisible, el, drawTrack, fitView, rgba, touchCanvas, type View } from './canvas';
 
 const MAX_GEN = 40;
 const BUCKETS = 12;
@@ -89,7 +89,7 @@ export function mountRacingLine(fig: HTMLElement): void {
     dirty = true;
   };
   trace.addEventListener('pointerdown', (e) => {
-    trace.setPointerCapture(e.pointerId);
+    capture(trace, e.pointerId);
     scrubAt(e);
   });
   trace.addEventListener('pointermove', (e) => {
