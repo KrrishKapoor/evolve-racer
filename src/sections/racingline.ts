@@ -13,7 +13,7 @@ interface Rec { gen: number; line: Float32Array; lap: number; progress: number; 
 function gripLimit(line: Float32Array): Float32Array {
   const n = line.length / 3;
   const out = new Float32Array(n).fill(1);
-  const k = 3;
+  const k = 5;
   for (let i = k; i < n - k; i++) {
     const ax = line[(i - k) * 3], ay = line[(i - k) * 3 + 1];
     const bx = line[i * 3], by = line[i * 3 + 1];
@@ -25,7 +25,7 @@ function gripLimit(line: Float32Array): Float32Array {
     out[i] = Math.min(1, Math.sqrt(GRIP * radius) / TOP_SPEED);
   }
   // Light smoothing so sampling noise does not read as a corner.
-  for (let pass = 0; pass < 2; pass++) for (let i = 1; i < n - 1; i++) out[i] = (out[i - 1] + 2 * out[i] + out[i + 1]) / 4;
+  for (let pass = 0; pass < 4; pass++) for (let i = 1; i < n - 1; i++) out[i] = (out[i - 1] + 2 * out[i] + out[i + 1]) / 4;
   return out;
 }
 

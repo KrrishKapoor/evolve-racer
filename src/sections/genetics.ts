@@ -3,7 +3,7 @@ import { GENOME_SIZE, NET_LAYERS } from '../sim/types';
 import { createRng } from '../sim/rng';
 import { randomGenome } from '../sim/nn';
 import { crossover, mutate } from '../sim/ga';
-import { createSurface, getTokens, runWhileVisible, el, reducedMotion, type Tokens } from './canvas';
+import { createSurface, getTokens, onTheme, runWhileVisible, el, reducedMotion, type Tokens } from './canvas';
 
 const POP = 6;
 const ROWS = Math.max(...NET_LAYERS.slice(0, -1)) + 1; // tallest column: inputs + bias
@@ -254,14 +254,10 @@ export function mountGenetics(fig: HTMLElement): void {
     return jit;
   }
 
-  onThemeRedraw(draw);
+  onTheme(draw);
   runWhileVisible(canvas, (dt) => {
     t += dt;
     if (auto && t > (phase === 2 ? 3.2 : 2.6)) advance();
     draw();
   });
-}
-
-function onThemeRedraw(f: () => void): void {
-  window.addEventListener('themechange', () => requestAnimationFrame(f));
 }
