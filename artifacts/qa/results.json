@@ -1,7 +1,7 @@
 {
   "model": "GPT-6 Astra, high reasoning effort",
-  "sha": "73fd18cb3e51cba2ec8de02e2f70e1516cbe6f71",
-  "date": "2026-11-13T09:43:08.418Z",
+  "sha": "7231e9c21e1421650c582c2ce21b1da59247a8c0",
+  "date": "2026-11-13T09:53:35.132Z",
   "browser": "Playwright Chromium desktop / emulated touch (not physical iOS or Safari)",
   "viewports": [
     {
@@ -14,7 +14,7 @@
           "label": "real initial warmup generation 11 and best lap",
           "pass": true,
           "data": {
-            "fps": 60.00487821198687,
+            "fps": 59.86320956634025,
             "generation": 11,
             "bestLap": 13.662504196166992,
             "alive": 1000,
@@ -58,38 +58,38 @@
           "pass": true,
           "data": {
             "rafFps": 60.0030001500075,
-            "frameP95": 16.700000000000728,
-            "debugFpsMean": 60.003127083040226,
+            "frameP95": 16.799999999999272,
+            "debugFpsMean": 60.003223605616036,
             "population": 1000,
             "generation": 11,
             "bestLap": 13.662504196166992,
-            "sampleMs": 8007.200000071525
+            "sampleMs": 8007.600000047683
           }
         },
         {
           "label": "FPS 1000 cars 4×",
           "pass": true,
           "data": {
-            "rafFps": 60.002250084378176,
-            "frameP95": 16.799999999999272,
-            "debugFpsMean": 60.00316986296943,
+            "rafFps": 60.00225008437816,
+            "frameP95": 16.700000000000728,
+            "debugFpsMean": 60.00317676982937,
             "population": 1000,
             "generation": 14,
             "bestLap": 13.16159439086914,
-            "sampleMs": 8006.900000071524
+            "sampleMs": 8006.900000047684
           }
         },
         {
           "label": "FPS 1000 cars Max",
           "pass": true,
           "data": {
-            "rafFps": 60.00300015000749,
-            "frameP95": 16.799999999999272,
-            "debugFpsMean": 60.0031848554514,
+            "rafFps": 60.001500037500946,
+            "frameP95": 16.700000000004366,
+            "debugFpsMean": 60.003072587761544,
             "population": 1000,
             "generation": 41,
             "bestLap": 10.088292121887207,
-            "sampleMs": 8010.500000023843
+            "sampleMs": 8012.100000023842
           }
         },
         {
@@ -97,7 +97,7 @@
           "pass": true,
           "data": {
             "initial": {
-              "fps": 60.00487821198687,
+              "fps": 59.86320956634025,
               "generation": 11,
               "bestLap": 13.662504196166992,
               "alive": 1000,
@@ -105,12 +105,12 @@
               "time": 0.03333333333333333
             },
             "after": {
-              "fps": 60.002222661860294,
+              "fps": 59.992233024266184,
               "generation": 41,
               "bestLap": 10.088292121887207,
-              "alive": 808,
+              "alive": 703,
               "population": 1000,
-              "time": 3.6166666666666587
+              "time": 4.716666666666655
             },
             "history": [
               {
@@ -271,28 +271,28 @@
           "pass": true,
           "data": {
             "a": {
-              "fps": 59.99876478105119,
+              "fps": 60.00706218520696,
               "generation": 41,
               "bestLap": 10.088292121887207,
-              "alive": 804,
+              "alive": 696,
               "population": 1000,
-              "time": 3.649999999999992
+              "time": 4.7499999999999885
             },
             "b": {
-              "fps": 60.01345411272588,
+              "fps": 60.000426124804335,
               "generation": 41,
               "bestLap": 10.088292121887207,
-              "alive": 804,
+              "alive": 696,
               "population": 1000,
-              "time": 3.649999999999992
+              "time": 4.7499999999999885
             },
             "c": {
-              "fps": 59.98984513829684,
+              "fps": 59.9984332354147,
               "generation": 41,
               "bestLap": 10.088292121887207,
-              "alive": 739,
+              "alive": 692,
               "population": 1000,
-              "time": 4.0666666666666575
+              "time": 5.166666666666654
             }
           }
         },
@@ -302,47 +302,47 @@
           "data": {
             "point": {
               "i": 0,
-              "x": 905.6294310053411,
-              "y": 509.5972420084699
+              "x": 969.1404415782918,
+              "y": 387.6911286803212
             },
             "detail": {
-              "index": 235,
+              "index": 0,
               "alive": true,
-              "speed": 0.7208053588867187,
+              "speed": 0.8023466491699218,
               "rays": [
-                0.11938272416591644,
-                0.1386137753725052,
-                0.6847805380821228,
-                0.5373045206069946,
-                0.35148298740386963,
-                0.18198202550411224,
-                0.12568281590938568
+                0.08341962844133377,
+                0.11142873764038086,
+                0.3530820608139038,
+                0.9329069256782532,
+                0.3517853915691376,
+                0.19875341653823853,
+                0.15632590651512146
               ],
               "activations": [
-                0.11938272416591644,
-                0.1386137753725052,
-                0.6847805380821228,
-                0.5373045206069946,
-                0.35148298740386963,
-                0.18198202550411224,
-                0.12568281590938568,
-                0.71180260181427,
-                0.222056582570076,
-                0.22165851294994354,
-                -0.8631685376167297,
-                -0.5851309895515442,
-                -0.5168511271476746,
-                0.30481061339378357,
-                -0.9519281387329102,
-                -0.7089685201644897,
-                0.9181224703788757,
-                0.5647296905517578,
-                -0.4586104154586792,
-                -0.10686260461807251,
-                0.27988195419311523,
-                0.7042307257652283,
-                -0.8427298665046692,
-                0.9265134930610657
+                0.08341962844133377,
+                0.11142873764038086,
+                0.3530820608139038,
+                0.9329069256782532,
+                0.3517853915691376,
+                0.19875341653823853,
+                0.15632590651512146,
+                0.792754590511322,
+                -0.26591289043426514,
+                -0.26040083169937134,
+                -0.3021028935909271,
+                -0.8560845851898193,
+                -0.7204397320747375,
+                0.1484176516532898,
+                -0.8647220134735107,
+                -0.8246760964393616,
+                0.7127465009689331,
+                0.9819195866584778,
+                0.35118526220321655,
+                0.9221298694610596,
+                0.8970144391059875,
+                0.9512583017349243,
+                -0.2280285805463791,
+                0.9945366978645325
               ]
             }
           }
@@ -417,12 +417,12 @@
           "label": "draw closed loop resets generation 1; touch does not scroll",
           "pass": true,
           "data": {
-            "fps": 59.99990029183359,
+            "fps": 60.004723475541056,
             "generation": 18,
             "bestLap": 7.475715637207031,
-            "alive": 848,
+            "alive": 750,
             "population": 1000,
-            "time": 1.0500000000000012
+            "time": 1.483333333333333
           }
         },
         {
@@ -451,7 +451,7 @@
                 "width": 1152,
                 "height": 504,
                 "nonzero": 62410,
-                "colors": 768
+                "colors": 776
               }
             ],
             "before": "SENSORS\n\nWhat a car sees.\n\nEach car feels the walls with seven rays. A reading of 1 means open road; it falls toward 0 as a wall gets close.\n\nThose seven numbers and the car’s speed are everything it knows.\n\n0.12\n1\n0.15\n2\n0.32\n3\n0.90\n4\n0.36\n5\n0.16\n6\n0.12\n7\n\nDrag up or down to move the car across the track.",
@@ -467,17 +467,17 @@
                 "width": 566,
                 "height": 425,
                 "nonzero": 9348,
-                "colors": 609
+                "colors": 571
               },
               {
                 "width": 566,
                 "height": 425,
-                "nonzero": 10353,
-                "colors": 2740
+                "nonzero": 10336,
+                "colors": 2733
               }
             ],
-            "before": "THE DRIVER\n\nWhat the network does.\n\nA small neural network turns those eight numbers into two: how hard to steer, and whether to accelerate or brake.\n\nNobody sets its weights by hand. Orange connections push a signal up, blue ones push it down, and thicker means stronger.\n\n0.20\n1\n0.28\n2\n0.68\n3\n0.71\n4\n0.09\n5\n0.05\n6\n0.04\n7\n0.67\nSPEED\nSTEER\n−0.02\nTHROTTLE\n+0.73\nGENERATION\n4\n\nDrag any input bar to hold it there and watch the outputs respond.",
-            "after": "THE DRIVER\n\nWhat the network does.\n\nA small neural network turns those eight numbers into two: how hard to steer, and whether to accelerate or brake.\n\nNobody sets its weights by hand. Orange connections push a signal up, blue ones push it down, and thicker means stronger.\n\n0.22\n1\n0.29\n2\n0.71\n3\n0.66\n4\n0.06\n5\n0.03\n6\n0.02\n7\n0.82\nSPEED\nSTEER\n−0.12\nTHROTTLE\n+0.65\nGENERATION\n4\n\nDrag any input bar to hold it there and watch the outputs respond."
+            "before": "THE DRIVER\n\nWhat the network does.\n\nA small neural network turns those eight numbers into two: how hard to steer, and whether to accelerate or brake.\n\nNobody sets its weights by hand. Orange connections push a signal up, blue ones push it down, and thicker means stronger.\n\n0.12\n1\n0.19\n2\n0.62\n3\n0.76\n4\n0.24\n5\n0.14\n6\n0.12\n7\n0.12\nSPEED\nSTEER\n−0.01\nTHROTTLE\n+0.84\nGENERATION\n4\n\nDrag any input bar to hold it there and watch the outputs respond.",
+            "after": "THE DRIVER\n\nWhat the network does.\n\nA small neural network turns those eight numbers into two: how hard to steer, and whether to accelerate or brake.\n\nNobody sets its weights by hand. Orange connections push a signal up, blue ones push it down, and thicker means stronger.\n\n0.15\n1\n0.22\n2\n0.64\n3\n0.75\n4\n0.20\n5\n0.11\n6\n0.09\n7\n0.34\nSPEED\nSTEER\n−0.02\nTHROTTLE\n+0.81\nGENERATION\n4\n\nDrag any input bar to hold it there and watch the outputs respond."
           }
         },
         {
@@ -515,8 +515,13 @@
               }
             ],
             "before": "THE RESULT\n\nWhy the racing line emerges.\n\nA car can only turn so sharply at a given speed. Enter a corner too fast and it slides into the outside wall. The shaded ceiling on the speed trace is that limit.\n\nSo the fastest drivers learn to swing wide, clip the inside, and get back on the throttle early. Nobody told them to; it is simply what survives.\n\nGeneration 1\nSlow\nFast\nGENERATION 1\n24% of a lap\nGENERATION 2\n24% of a lap\nTIME SAVED\n–\nStart over\n\nDrag along the speed trace to compare both lines point by point. The slider steps back through generations.",
-            "after": "THE RESULT\n\nWhy the racing line emerges.\n\nA car can only turn so sharply at a given speed. Enter a corner too fast and it slides into the outside wall. The shaded ceiling on the speed trace is that limit.\n\nSo the fastest drivers learn to swing wide, clip the inside, and get back on the throttle early. Nobody told them to; it is simply what survives.\n\nGeneration 1\nSlow\nFast\nGENERATION 1\n22% of a lap\nGENERATION 2\n22% of a lap\nTIME SAVED\n–\nStart over\n\nDrag along the speed trace to compare both lines point by point. The slider steps back through generations."
+            "after": "THE RESULT\n\nWhy the racing line emerges.\n\nA car can only turn so sharply at a given speed. Enter a corner too fast and it slides into the outside wall. The shaded ceiling on the speed trace is that limit.\n\nSo the fastest drivers learn to swing wide, clip the inside, and get back on the throttle early. Nobody told them to; it is simply what survives.\n\nGeneration 1\nSlow\nFast\nGENERATION 1\n19% of a lap\nGENERATION 2\n23% of a lap\nTIME SAVED\n–\nStart over\n\nDrag along the speed trace to compare both lines point by point. The slider steps back through generations."
           }
+        },
+        {
+          "label": "no browser errors including window error events",
+          "pass": true,
+          "data": []
         }
       ],
       "errors": [],
@@ -524,32 +529,32 @@
         {
           "mode": "1×",
           "rafFps": 60.0030001500075,
-          "frameP95": 16.700000000000728,
-          "debugFpsMean": 60.003127083040226,
+          "frameP95": 16.799999999999272,
+          "debugFpsMean": 60.003223605616036,
           "population": 1000,
           "generation": 11,
           "bestLap": 13.662504196166992,
-          "sampleMs": 8007.200000071525
+          "sampleMs": 8007.600000047683
         },
         {
           "mode": "4×",
-          "rafFps": 60.002250084378176,
-          "frameP95": 16.799999999999272,
-          "debugFpsMean": 60.00316986296943,
+          "rafFps": 60.00225008437816,
+          "frameP95": 16.700000000000728,
+          "debugFpsMean": 60.00317676982937,
           "population": 1000,
           "generation": 14,
           "bestLap": 13.16159439086914,
-          "sampleMs": 8006.900000071524
+          "sampleMs": 8006.900000047684
         },
         {
           "mode": "Max",
-          "rafFps": 60.00300015000749,
-          "frameP95": 16.799999999999272,
-          "debugFpsMean": 60.0031848554514,
+          "rafFps": 60.001500037500946,
+          "frameP95": 16.700000000004366,
+          "debugFpsMean": 60.003072587761544,
           "population": 1000,
           "generation": 41,
           "bestLap": 10.088292121887207,
-          "sampleMs": 8010.500000023843
+          "sampleMs": 8012.100000023842
         }
       ],
       "screenshots": [
@@ -574,7 +579,7 @@
           "label": "real initial warmup generation 11 and best lap",
           "pass": true,
           "data": {
-            "fps": 60.000690954082046,
+            "fps": 59.87193301892612,
             "generation": 11,
             "bestLap": 13.662504196166992,
             "alive": 1000,
@@ -617,39 +622,39 @@
           "label": "FPS 1000 cars 1×",
           "pass": true,
           "data": {
-            "rafFps": 60.00225008437817,
+            "rafFps": 60.00225008437816,
             "frameP95": 16.700000000000728,
-            "debugFpsMean": 60.003162740186866,
+            "debugFpsMean": 60.00313743398371,
             "population": 1000,
             "generation": 11,
             "bestLap": 13.662504196166992,
-            "sampleMs": 8005.299999976158
+            "sampleMs": 8006.700000000001
           }
         },
         {
           "label": "FPS 1000 cars 4×",
           "pass": true,
           "data": {
-            "rafFps": 60.00225008437816,
-            "frameP95": 16.700000000000728,
-            "debugFpsMean": 60.0031063027467,
+            "rafFps": 60.003000150007495,
+            "frameP95": 16.799999999999272,
+            "debugFpsMean": 60.00316924129473,
             "population": 1000,
             "generation": 14,
             "bestLap": 13.16159439086914,
-            "sampleMs": 8003.299999952316
+            "sampleMs": 8006.700000000001
           }
         },
         {
           "label": "FPS 1000 cars Max",
           "pass": true,
           "data": {
-            "rafFps": 60.00225008437818,
-            "frameP95": 16.799999999999272,
-            "debugFpsMean": 60.003114435620354,
+            "rafFps": 60.00225008437813,
+            "frameP95": 16.799999999995634,
+            "debugFpsMean": 60.00322056108003,
             "population": 1000,
             "generation": 41,
             "bestLap": 10.088292121887207,
-            "sampleMs": 8010.499999976157
+            "sampleMs": 8009.599999952319
           }
         },
         {
@@ -657,7 +662,7 @@
           "pass": true,
           "data": {
             "initial": {
-              "fps": 60.000690954082046,
+              "fps": 59.87193301892612,
               "generation": 11,
               "bestLap": 13.662504196166992,
               "alive": 1000,
@@ -665,12 +670,12 @@
               "time": 0.016666666666666666
             },
             "after": {
-              "fps": 60.010097616275,
+              "fps": 59.9909778993032,
               "generation": 41,
               "bestLap": 10.088292121887207,
-              "alive": 619,
+              "alive": 606,
               "population": 1000,
-              "time": 6.883333333333314
+              "time": 7.333333333333313
             },
             "history": [
               {
@@ -831,28 +836,28 @@
           "pass": true,
           "data": {
             "a": {
-              "fps": 60.01330299319854,
+              "fps": 60.01273202952826,
               "generation": 41,
               "bestLap": 10.088292121887207,
-              "alive": 605,
+              "alive": 590,
               "population": 1000,
-              "time": 6.949999999999981
+              "time": 7.399999999999979
             },
             "b": {
-              "fps": 60.007540909432926,
+              "fps": 59.9897889255574,
               "generation": 41,
               "bestLap": 10.088292121887207,
-              "alive": 605,
+              "alive": 590,
               "population": 1000,
-              "time": 6.949999999999981
+              "time": 7.399999999999979
             },
             "c": {
-              "fps": 59.9910820127912,
+              "fps": 60.009726302020894,
               "generation": 41,
               "bestLap": 10.088292121887207,
-              "alive": 591,
+              "alive": 585,
               "population": 1000,
-              "time": 7.349999999999979
+              "time": 7.799999999999978
             }
           }
         },
@@ -862,47 +867,47 @@
           "data": {
             "point": {
               "i": 0,
-              "x": 99.1439510725372,
-              "y": 496.32270132519614
+              "x": 54.537327983297644,
+              "y": 502.9025957384174
             },
             "detail": {
               "index": 110,
               "alive": true,
-              "speed": 0.6945814514160156,
+              "speed": 0.8892434692382812,
               "rays": [
-                0.08407901972532272,
-                0.1306086629629135,
-                0.7184037566184998,
-                0.41536498069763184,
-                0.2693578004837036,
-                0.18251319229602814,
-                0.15585952997207642
+                0.10537496954202652,
+                0.13911288976669312,
+                0.34906744956970215,
+                1,
+                0.34389162063598633,
+                0.17472852766513824,
+                0.13451021909713745
               ],
               "activations": [
-                0.08407901972532272,
-                0.1306086629629135,
-                0.7184037566184998,
-                0.41536498069763184,
-                0.2693578004837036,
-                0.18251319229602814,
-                0.15585952997207642,
-                0.6940707564353943,
-                0.7574109435081482,
-                0.0917821004986763,
-                -0.1995997130870819,
-                -0.673514723777771,
-                -0.25041523575782776,
-                -0.21714383363723755,
-                -0.976208508014679,
-                -0.8403027653694153,
-                0.904019296169281,
-                0.7866332530975342,
-                -0.479916512966156,
-                0.18704530596733093,
-                -0.5402089357376099,
-                0.33471542596817017,
-                -0.9400599002838135,
-                0.19298896193504333
+                0.10537496954202652,
+                0.13911288976669312,
+                0.34906744956970215,
+                1,
+                0.34389162063598633,
+                0.17472852766513824,
+                0.13451021909713745,
+                0.8798171877861023,
+                0.27331170439720154,
+                -0.11745703965425491,
+                0.033963508903980255,
+                -0.7986778616905212,
+                -0.8221100568771362,
+                -0.8546582460403442,
+                -0.9737401604652405,
+                -0.9173591136932373,
+                0.9351356625556946,
+                0.8330368995666504,
+                0.9341663718223572,
+                0.9526429772377014,
+                -0.1787194162607193,
+                0.8307474255561829,
+                -0.2635180950164795,
+                0.9989939332008362
               ]
             }
           }
@@ -912,48 +917,48 @@
           "pass": true,
           "data": {
             "point": {
-              "i": 23,
-              "x": 361.0506191934508,
-              "y": 620.2675112640718
+              "i": 21,
+              "x": 324.04724700433934,
+              "y": 479.6201613558345
             },
             "detail": {
-              "index": 23,
+              "index": 21,
               "alive": false,
               "speed": 0,
               "rays": [
-                0.29605576395988464,
-                0.5946692228317261,
-                0.11968228220939636,
-                0.03175675496459007,
-                0.01709921658039093,
-                0.01188976876437664,
-                0.011310534551739693
+                0.14175555109977722,
+                0.21348170936107635,
+                0.3531828820705414,
+                0.4769589304924011,
+                0.6044344902038574,
+                0.12081776559352875,
+                0.12358856946229935
               ],
               "activations": [
-                0.29605576395988464,
-                0.5946692228317261,
-                0.11968228220939636,
-                0.03175675496459007,
-                0.01709921658039093,
-                0.01188976876437664,
-                0.011310534551739693,
-                0.5129858255386353,
-                0.6508044004440308,
-                -0.0474696047604084,
-                -0.014278966002166271,
-                -0.31466034054756165,
-                0.42570212483406067,
-                0.09079486131668091,
-                -0.7902628779411316,
-                -0.7233774662017822,
-                0.933019757270813,
-                0.9452908039093018,
-                -0.9952974319458008,
-                -0.5706824660301208,
-                -0.10116416215896606,
-                -0.6521953344345093,
-                -0.5364474058151245,
-                -0.988300085067749
+                0.14175555109977722,
+                0.21348170936107635,
+                0.3531828820705414,
+                0.4769589304924011,
+                0.6044344902038574,
+                0.12081776559352875,
+                0.12358856946229935,
+                0.3610920011997223,
+                -0.5445738434791565,
+                0.4437160789966583,
+                -0.8356516361236572,
+                -0.8480551242828369,
+                -0.571829080581665,
+                0.013132897205650806,
+                -0.9641138315200806,
+                -0.3932293951511383,
+                0.9749712944030762,
+                0.7274457216262817,
+                0.4201086163520813,
+                -0.5075727105140686,
+                0.8447768092155457,
+                0.6495973467826843,
+                0.5816946029663086,
+                0.9873126745223999
               ]
             }
           }
@@ -981,12 +986,12 @@
           "label": "draw closed loop resets generation 1; touch does not scroll",
           "pass": true,
           "data": {
-            "fps": 60.01687084024853,
+            "fps": 60.01059314034557,
             "generation": 18,
             "bestLap": 8.161270141601562,
-            "alive": 601,
+            "alive": 611,
             "population": 1000,
-            "time": 2.083333333333331
+            "time": 1.949999999999998
           }
         },
         {
@@ -1014,12 +1019,12 @@
               {
                 "width": 358,
                 "height": 239,
-                "nonzero": 6398,
-                "colors": 403
+                "nonzero": 6409,
+                "colors": 407
               }
             ],
-            "before": "SENSORS\n\nWhat a car sees.\n\nEach car feels the walls with seven rays. A reading of 1 means open road; it falls toward 0 as a wall gets close.\n\nThose seven numbers and the car’s speed are everything it knows.\n\n0.12\n1\n0.16\n2\n0.93\n3\n0.53\n4\n0.27\n5\n0.15\n6\n0.12\n7\n\nDrag up or down to move the car across the track.",
-            "after": "SENSORS\n\nWhat a car sees.\n\nEach car feels the walls with seven rays. A reading of 1 means open road; it falls toward 0 as a wall gets close.\n\nThose seven numbers and the car’s speed are everything it knows.\n\n0.17\n1\n0.30\n2\n0.60\n3\n0.27\n4\n0.14\n5\n0.09\n6\n0.08\n7\n\nDrag up or down to move the car across the track."
+            "before": "SENSORS\n\nWhat a car sees.\n\nEach car feels the walls with seven rays. A reading of 1 means open road; it falls toward 0 as a wall gets close.\n\nThose seven numbers and the car’s speed are everything it knows.\n\n0.12\n1\n0.16\n2\n0.96\n3\n0.55\n4\n0.28\n5\n0.15\n6\n0.12\n7\n\nDrag up or down to move the car across the track.",
+            "after": "SENSORS\n\nWhat a car sees.\n\nEach car feels the walls with seven rays. A reading of 1 means open road; it falls toward 0 as a wall gets close.\n\nThose seven numbers and the car’s speed are everything it knows.\n\n0.17\n1\n0.30\n2\n0.60\n3\n0.27\n4\n0.14\n5\n0.10\n6\n0.09\n7\n\nDrag up or down to move the car across the track."
           }
         },
         {
@@ -1030,18 +1035,18 @@
               {
                 "width": 358,
                 "height": 179,
-                "nonzero": 3600,
-                "colors": 456
+                "nonzero": 3596,
+                "colors": 430
               },
               {
                 "width": 358,
                 "height": 269,
-                "nonzero": 4966,
-                "colors": 2274
+                "nonzero": 4971,
+                "colors": 2265
               }
             ],
-            "before": "THE DRIVER\n\nWhat the network does.\n\nA small neural network turns those eight numbers into two: how hard to steer, and whether to accelerate or brake.\n\nNobody sets its weights by hand. Orange connections push a signal up, blue ones push it down, and thicker means stronger.\n\n0.16\n1\n0.23\n2\n0.65\n3\n0.74\n4\n0.18\n5\n0.10\n6\n0.08\n7\n0.43\nSPEED\nSTEER\n−0.03\nTHROTTLE\n+0.79\nGENERATION\n4\n\nDrag any input bar to hold it there and watch the outputs respond.",
-            "after": "THE DRIVER\n\nWhat the network does.\n\nA small neural network turns those eight numbers into two: how hard to steer, and whether to accelerate or brake.\n\nNobody sets its weights by hand. Orange connections push a signal up, blue ones push it down, and thicker means stronger.\n\n0.20\n1\n0.28\n2\n0.68\n3\n0.72\n4\n0.10\n5\n0.05\n6\n0.04\n7\n0.66\nSPEED\nSTEER\n−0.02\nTHROTTLE\n+0.73\nGENERATION\n4\n\nDrag any input bar to hold it there and watch the outputs respond."
+            "before": "THE DRIVER\n\nWhat the network does.\n\nA small neural network turns those eight numbers into two: how hard to steer, and whether to accelerate or brake.\n\nNobody sets its weights by hand. Orange connections push a signal up, blue ones push it down, and thicker means stronger.\n\n0.14\n1\n0.21\n2\n0.64\n3\n0.75\n4\n0.21\n5\n0.12\n6\n0.10\n7\n0.29\nSPEED\nSTEER\n−0.02\nTHROTTLE\n+0.82\nGENERATION\n4\n\nDrag any input bar to hold it there and watch the outputs respond.",
+            "after": "THE DRIVER\n\nWhat the network does.\n\nA small neural network turns those eight numbers into two: how hard to steer, and whether to accelerate or brake.\n\nNobody sets its weights by hand. Orange connections push a signal up, blue ones push it down, and thicker means stronger.\n\n0.18\n1\n0.25\n2\n0.67\n3\n0.73\n4\n0.14\n5\n0.08\n6\n0.06\n7\n0.53\nSPEED\nSTEER\n−0.03\nTHROTTLE\n+0.77\nGENERATION\n4\n\nDrag any input bar to hold it there and watch the outputs respond."
           }
         },
         {
@@ -1079,41 +1084,46 @@
               }
             ],
             "before": "THE RESULT\n\nWhy the racing line emerges.\n\nA car can only turn so sharply at a given speed. Enter a corner too fast and it slides into the outside wall. The shaded ceiling on the speed trace is that limit.\n\nSo the fastest drivers learn to swing wide, clip the inside, and get back on the throttle early. Nobody told them to; it is simply what survives.\n\nGeneration 1\nSlow\nFast\nGENERATION 1\n24% of a lap\nGENERATION 1\n24% of a lap\nTIME SAVED\n–\nStart over\n\nDrag along the speed trace to compare both lines point by point. The slider steps back through generations.",
-            "after": "THE RESULT\n\nWhy the racing line emerges.\n\nA car can only turn so sharply at a given speed. Enter a corner too fast and it slides into the outside wall. The shaded ceiling on the speed trace is that limit.\n\nSo the fastest drivers learn to swing wide, clip the inside, and get back on the throttle early. Nobody told them to; it is simply what survives.\n\nGeneration 1\nSlow\nFast\nGENERATION 1\n17% of a lap\nGENERATION 3\n24% of a lap\nTIME SAVED\n–\nStart over\n\nDrag along the speed trace to compare both lines point by point. The slider steps back through generations."
+            "after": "THE RESULT\n\nWhy the racing line emerges.\n\nA car can only turn so sharply at a given speed. Enter a corner too fast and it slides into the outside wall. The shaded ceiling on the speed trace is that limit.\n\nSo the fastest drivers learn to swing wide, clip the inside, and get back on the throttle early. Nobody told them to; it is simply what survives.\n\nGeneration 1\nSlow\nFast\nGENERATION 1\n14% of a lap\nGENERATION 1\n14% of a lap\nTIME SAVED\n–\nStart over\n\nDrag along the speed trace to compare both lines point by point. The slider steps back through generations."
           }
+        },
+        {
+          "label": "no browser errors including window error events",
+          "pass": true,
+          "data": []
         }
       ],
       "errors": [],
       "fps": [
         {
           "mode": "1×",
-          "rafFps": 60.00225008437817,
+          "rafFps": 60.00225008437816,
           "frameP95": 16.700000000000728,
-          "debugFpsMean": 60.003162740186866,
+          "debugFpsMean": 60.00313743398371,
           "population": 1000,
           "generation": 11,
           "bestLap": 13.662504196166992,
-          "sampleMs": 8005.299999976158
+          "sampleMs": 8006.700000000001
         },
         {
           "mode": "4×",
-          "rafFps": 60.00225008437816,
-          "frameP95": 16.700000000000728,
-          "debugFpsMean": 60.0031063027467,
+          "rafFps": 60.003000150007495,
+          "frameP95": 16.799999999999272,
+          "debugFpsMean": 60.00316924129473,
           "population": 1000,
           "generation": 14,
           "bestLap": 13.16159439086914,
-          "sampleMs": 8003.299999952316
+          "sampleMs": 8006.700000000001
         },
         {
           "mode": "Max",
-          "rafFps": 60.00225008437818,
-          "frameP95": 16.799999999999272,
-          "debugFpsMean": 60.003114435620354,
+          "rafFps": 60.00225008437813,
+          "frameP95": 16.799999999995634,
+          "debugFpsMean": 60.00322056108003,
           "population": 1000,
           "generation": 41,
           "bestLap": 10.088292121887207,
-          "sampleMs": 8010.499999976157
+          "sampleMs": 8009.599999952319
         }
       ],
       "screenshots": [
@@ -1138,7 +1148,7 @@
           "label": "real initial warmup generation 11 and best lap",
           "pass": true,
           "data": {
-            "fps": 60.000967490889686,
+            "fps": 60.00969964458812,
             "generation": 11,
             "bestLap": 13.662504196166992,
             "alive": 1000,
@@ -1181,13 +1191,13 @@
           "label": "FPS 1000 cars 1×",
           "pass": true,
           "data": {
-            "rafFps": 60.00225008437817,
+            "rafFps": 60.0030001500075,
             "frameP95": 16.700000000000728,
-            "debugFpsMean": 60.00317089744916,
+            "debugFpsMean": 60.00303865598175,
             "population": 1000,
             "generation": 11,
             "bestLap": 13.662504196166992,
-            "sampleMs": 8007.700000023842
+            "sampleMs": 8007.499999928474
           }
         },
         {
@@ -1196,24 +1206,24 @@
           "data": {
             "rafFps": 60.00225008437816,
             "frameP95": 16.700000000000728,
-            "debugFpsMean": 60.002988428902825,
+            "debugFpsMean": 60.003169936958386,
             "population": 1000,
             "generation": 14,
             "bestLap": 13.16159439086914,
-            "sampleMs": 8006.800000023843
+            "sampleMs": 8006.9000000000015
           }
         },
         {
           "label": "FPS 1000 cars Max",
           "pass": true,
           "data": {
-            "rafFps": 60.00225008437813,
+            "rafFps": 60.00300015000749,
             "frameP95": 16.799999999999272,
-            "debugFpsMean": 60.00313037820909,
+            "debugFpsMean": 60.003192939609846,
             "population": 1000,
             "generation": 41,
             "bestLap": 10.088292121887207,
-            "sampleMs": 8012.099999952319
+            "sampleMs": 8010.9000000000015
           }
         },
         {
@@ -1221,7 +1231,7 @@
           "pass": true,
           "data": {
             "initial": {
-              "fps": 60.000967490889686,
+              "fps": 60.00969964458812,
               "generation": 11,
               "bestLap": 13.662504196166992,
               "alive": 1000,
@@ -1229,12 +1239,12 @@
               "time": 0.016666666666666666
             },
             "after": {
-              "fps": 60.02136150880409,
+              "fps": 60.002672240821276,
               "generation": 41,
               "bestLap": 10.088292121887207,
-              "alive": 711,
+              "alive": 631,
               "population": 1000,
-              "time": 4.533333333333323
+              "time": 6.416666666666649
             },
             "history": [
               {
@@ -1395,28 +1405,28 @@
           "pass": true,
           "data": {
             "a": {
-              "fps": 60.00683970321082,
+              "fps": 60.006377838655546,
               "generation": 41,
               "bestLap": 10.088292121887207,
-              "alive": 698,
+              "alive": 619,
               "population": 1000,
-              "time": 4.599999999999989
+              "time": 6.483333333333316
             },
             "b": {
-              "fps": 59.999751509009876,
+              "fps": 59.99974066937178,
               "generation": 41,
               "bestLap": 10.088292121887207,
-              "alive": 698,
+              "alive": 619,
               "population": 1000,
-              "time": 4.599999999999989
+              "time": 6.483333333333316
             },
             "c": {
-              "fps": 60.00199469325033,
+              "fps": 60.01561657318438,
               "generation": 41,
               "bestLap": 10.088292121887207,
-              "alive": 693,
+              "alive": 606,
               "population": 1000,
-              "time": 4.999999999999988
+              "time": 6.883333333333314
             }
           }
         },
@@ -1426,47 +1436,47 @@
           "data": {
             "point": {
               "i": 0,
-              "x": 667.6054638424931,
-              "y": 169.41258070850932
+              "x": 501.2832620404656,
+              "y": 195.88559237903036
             },
             "detail": {
-              "index": 653,
+              "index": 147,
               "alive": true,
-              "speed": 0.6551293182373047,
+              "speed": 0.971117935180664,
               "rays": [
-                0.051662325859069824,
-                0.06954722851514816,
-                0.23660369217395782,
-                0.6448659896850586,
-                0.3726966083049774,
-                0.23152410984039307,
-                0.1876363307237625
+                0.10123375803232193,
+                0.1285659372806549,
+                0.8306154608726501,
+                0.550277590751648,
+                0.32920533418655396,
+                0.18525032699108124,
+                0.13979105651378632
               ],
               "activations": [
-                0.051662325859069824,
-                0.06954722851514816,
-                0.23660369217395782,
-                0.6448659896850586,
-                0.3726966083049774,
-                0.23152410984039307,
-                0.1876363307237625,
-                0.645173192024231,
-                -0.2896530032157898,
-                0.43102604150772095,
-                -0.49243026971817017,
-                -0.7330078482627869,
-                -0.29316630959510803,
-                -0.5888395309448242,
-                -0.5201289057731628,
-                -0.05372244864702225,
-                0.9323738217353821,
-                -0.6630882024765015,
-                0.7012221813201904,
-                0.7696661949157715,
-                -0.4321591556072235,
-                0.514287531375885,
-                0.9443325996398926,
-                0.9941169619560242
+                0.10123375803232193,
+                0.1285659372806549,
+                0.8306154608726501,
+                0.550277590751648,
+                0.32920533418655396,
+                0.18525032699108124,
+                0.13979105651378632,
+                0.9809076189994812,
+                0.531278133392334,
+                0.05135100334882736,
+                -0.4354892075061798,
+                -0.6388247013092041,
+                -0.01071398425847292,
+                0.6832835078239441,
+                -0.7951056957244873,
+                -0.40807172656059265,
+                0.19957512617111206,
+                0.9325844049453735,
+                -0.962182879447937,
+                -0.03459697589278221,
+                0.049464792013168335,
+                0.28102314472198486,
+                -0.9878844618797302,
+                -0.33949631452560425
               ]
             }
           }
@@ -1545,12 +1555,12 @@
           "label": "draw closed loop resets generation 1; touch does not scroll",
           "pass": true,
           "data": {
-            "fps": 60.011211046201495,
+            "fps": 59.99877918740644,
             "generation": 18,
             "bestLap": 7.255163192749023,
-            "alive": 805,
+            "alive": 801,
             "population": 1000,
-            "time": 1.6833333333333322
+            "time": 1.733333333333332
           }
         },
         {
@@ -1579,11 +1589,11 @@
                 "width": 777,
                 "height": 312,
                 "nonzero": 28528,
-                "colors": 640
+                "colors": 643
               }
             ],
             "before": "SENSORS\n\nWhat a car sees.\n\nEach car feels the walls with seven rays. A reading of 1 means open road; it falls toward 0 as a wall gets close.\n\nThose seven numbers and the car’s speed are everything it knows.\n\n0.12\n1\n0.15\n2\n0.32\n3\n0.90\n4\n0.36\n5\n0.16\n6\n0.12\n7\n\nDrag up or down to move the car across the track.",
-            "after": "SENSORS\n\nWhat a car sees.\n\nEach car feels the walls with seven rays. A reading of 1 means open road; it falls toward 0 as a wall gets close.\n\nThose seven numbers and the car’s speed are everything it knows.\n\n0.16\n1\n0.27\n2\n0.82\n3\n0.32\n4\n0.15\n5\n0.10\n6\n0.08\n7\n\nDrag up or down to move the car across the track."
+            "after": "SENSORS\n\nWhat a car sees.\n\nEach car feels the walls with seven rays. A reading of 1 means open road; it falls toward 0 as a wall gets close.\n\nThose seven numbers and the car’s speed are everything it knows.\n\n0.16\n1\n0.27\n2\n0.80\n3\n0.31\n4\n0.15\n5\n0.10\n6\n0.09\n7\n\nDrag up or down to move the car across the track."
           }
         },
         {
@@ -1594,18 +1604,18 @@
               {
                 "width": 378,
                 "height": 284,
-                "nonzero": 4142,
-                "colors": 456
+                "nonzero": 4136,
+                "colors": 414
               },
               {
                 "width": 378,
                 "height": 284,
-                "nonzero": 5364,
-                "colors": 2315
+                "nonzero": 5371,
+                "colors": 2313
               }
             ],
-            "before": "THE DRIVER\n\nWhat the network does.\n\nA small neural network turns those eight numbers into two: how hard to steer, and whether to accelerate or brake.\n\nNobody sets its weights by hand. Orange connections push a signal up, blue ones push it down, and thicker means stronger.\n\n0.15\n1\n0.22\n2\n0.64\n3\n0.75\n4\n0.20\n5\n0.11\n6\n0.09\n7\n0.34\nSPEED\nSTEER\n−0.02\nTHROTTLE\n+0.81\nGENERATION\n4\n\nDrag any input bar to hold it there and watch the outputs respond.",
-            "after": "THE DRIVER\n\nWhat the network does.\n\nA small neural network turns those eight numbers into two: how hard to steer, and whether to accelerate or brake.\n\nNobody sets its weights by hand. Orange connections push a signal up, blue ones push it down, and thicker means stronger.\n\n0.19\n1\n0.26\n2\n0.67\n3\n0.73\n4\n0.13\n5\n0.07\n6\n0.06\n7\n0.57\nSPEED\nSTEER\n−0.02\nTHROTTLE\n+0.76\nGENERATION\n4\n\nDrag any input bar to hold it there and watch the outputs respond."
+            "before": "THE DRIVER\n\nWhat the network does.\n\nA small neural network turns those eight numbers into two: how hard to steer, and whether to accelerate or brake.\n\nNobody sets its weights by hand. Orange connections push a signal up, blue ones push it down, and thicker means stronger.\n\n0.13\n1\n0.19\n2\n0.62\n3\n0.76\n4\n0.23\n5\n0.13\n6\n0.11\n7\n0.19\nSPEED\nSTEER\n−0.02\nTHROTTLE\n+0.83\nGENERATION\n4\n\nDrag any input bar to hold it there and watch the outputs respond.",
+            "after": "THE DRIVER\n\nWhat the network does.\n\nA small neural network turns those eight numbers into two: how hard to steer, and whether to accelerate or brake.\n\nNobody sets its weights by hand. Orange connections push a signal up, blue ones push it down, and thicker means stronger.\n\n0.16\n1\n0.24\n2\n0.66\n3\n0.74\n4\n0.17\n5\n0.09\n6\n0.07\n7\n0.45\nSPEED\nSTEER\n−0.03\nTHROTTLE\n+0.79\nGENERATION\n4\n\nDrag any input bar to hold it there and watch the outputs respond."
           }
         },
         {
@@ -1633,51 +1643,56 @@
                 "width": 777,
                 "height": 312,
                 "nonzero": 6788,
-                "colors": 858
+                "colors": 776
               },
               {
                 "width": 777,
                 "height": 140,
-                "nonzero": 860,
-                "colors": 246
+                "nonzero": 723,
+                "colors": 202
               }
             ],
-            "before": "THE RESULT\n\nWhy the racing line emerges.\n\nA car can only turn so sharply at a given speed. Enter a corner too fast and it slides into the outside wall. The shaded ceiling on the speed trace is that limit.\n\nSo the fastest drivers learn to swing wide, clip the inside, and get back on the throttle early. Nobody told them to; it is simply what survives.\n\nGeneration 1\nSlow\nFast\nGENERATION 1\n24% of a lap\nGENERATION 4\n34% of a lap\nTIME SAVED\n–\nStart over\n\nDrag along the speed trace to compare both lines point by point. The slider steps back through generations.",
-            "after": "THE RESULT\n\nWhy the racing line emerges.\n\nA car can only turn so sharply at a given speed. Enter a corner too fast and it slides into the outside wall. The shaded ceiling on the speed trace is that limit.\n\nSo the fastest drivers learn to swing wide, clip the inside, and get back on the throttle early. Nobody told them to; it is simply what survives.\n\nGeneration 1\nSlow\nFast\nGENERATION 1\n22% of a lap\nGENERATION 4\n22% of a lap\nTIME SAVED\n–\nStart over\n\nDrag along the speed trace to compare both lines point by point. The slider steps back through generations."
+            "before": "THE RESULT\n\nWhy the racing line emerges.\n\nA car can only turn so sharply at a given speed. Enter a corner too fast and it slides into the outside wall. The shaded ceiling on the speed trace is that limit.\n\nSo the fastest drivers learn to swing wide, clip the inside, and get back on the throttle early. Nobody told them to; it is simply what survives.\n\nGeneration 1\nSlow\nFast\nGENERATION 1\n24% of a lap\nGENERATION 2\n24% of a lap\nTIME SAVED\n–\nStart over\n\nDrag along the speed trace to compare both lines point by point. The slider steps back through generations.",
+            "after": "THE RESULT\n\nWhy the racing line emerges.\n\nA car can only turn so sharply at a given speed. Enter a corner too fast and it slides into the outside wall. The shaded ceiling on the speed trace is that limit.\n\nSo the fastest drivers learn to swing wide, clip the inside, and get back on the throttle early. Nobody told them to; it is simply what survives.\n\nGeneration 1\nSlow\nFast\nGENERATION 1\n8% of a lap\nGENERATION 1\n8% of a lap\nTIME SAVED\n–\nStart over\n\nDrag along the speed trace to compare both lines point by point. The slider steps back through generations."
           }
+        },
+        {
+          "label": "no browser errors including window error events",
+          "pass": true,
+          "data": []
         }
       ],
       "errors": [],
       "fps": [
         {
           "mode": "1×",
-          "rafFps": 60.00225008437817,
+          "rafFps": 60.0030001500075,
           "frameP95": 16.700000000000728,
-          "debugFpsMean": 60.00317089744916,
+          "debugFpsMean": 60.00303865598175,
           "population": 1000,
           "generation": 11,
           "bestLap": 13.662504196166992,
-          "sampleMs": 8007.700000023842
+          "sampleMs": 8007.499999928474
         },
         {
           "mode": "4×",
           "rafFps": 60.00225008437816,
           "frameP95": 16.700000000000728,
-          "debugFpsMean": 60.002988428902825,
+          "debugFpsMean": 60.003169936958386,
           "population": 1000,
           "generation": 14,
           "bestLap": 13.16159439086914,
-          "sampleMs": 8006.800000023843
+          "sampleMs": 8006.9000000000015
         },
         {
           "mode": "Max",
-          "rafFps": 60.00225008437813,
+          "rafFps": 60.00300015000749,
           "frameP95": 16.799999999999272,
-          "debugFpsMean": 60.00313037820909,
+          "debugFpsMean": 60.003192939609846,
           "population": 1000,
           "generation": 41,
           "bestLap": 10.088292121887207,
-          "sampleMs": 8012.099999952319
+          "sampleMs": 8010.9000000000015
         }
       ],
       "screenshots": [

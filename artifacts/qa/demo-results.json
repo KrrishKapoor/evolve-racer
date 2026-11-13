@@ -33,7 +33,7 @@
             "label": "Genomes as grids of weights; parents combine into a child, then mutate",
             "width": 1152,
             "height": 576,
-            "painted": 142045
+            "painted": 142204
           },
           {
             "label": "The circuit with the first and a later generation’s best lines, coloured by speed",
@@ -45,7 +45,7 @@
             "label": "Speed along the lap for both lines",
             "width": 1152,
             "height": 140,
-            "painted": 3022
+            "painted": 3035
           }
         ]
       },
@@ -55,8 +55,8 @@
         "data": {
           "high": "0.98",
           "low": "0.02",
-          "before": "STEER\n−0.54\nTHROTTLE\n+0.87\nGENERATION\n4",
-          "after": "STEER\n+0.02\nTHROTTLE\n+0.68\nGENERATION\n4"
+          "before": "STEER\n−0.55\nTHROTTLE\n+0.88\nGENERATION\n4",
+          "after": "STEER\n+0.02\nTHROTTLE\n+0.69\nGENERATION\n4"
         }
       },
       {
@@ -91,8 +91,14 @@
         "label": "theme persistence",
         "pass": true,
         "data": "dark survives reload"
+      },
+      {
+        "label": "no browser errors including raw window events",
+        "pass": true,
+        "data": []
       }
-    ]
+    ],
+    "errors": []
   },
   {
     "name": "portrait",
@@ -110,7 +116,7 @@
             "label": "A car on the track with seven sensor rays. Drag up or down to move it across the track.",
             "width": 358,
             "height": 239,
-            "painted": 24690
+            "painted": 24689
           },
           {
             "label": "The best car of a small population driving an oval",
@@ -128,7 +134,7 @@
             "label": "Genomes as grids of weights; parents combine into a child, then mutate",
             "width": 358,
             "height": 477,
-            "painted": 49188
+            "painted": 49293
           },
           {
             "label": "The circuit with the first and a later generation’s best lines, coloured by speed",
@@ -140,7 +146,7 @@
             "label": "Speed along the lap for both lines",
             "width": 358,
             "height": 140,
-            "painted": 1434
+            "painted": 1447
           }
         ]
       },
@@ -151,7 +157,7 @@
           "high": "0.98",
           "low": "0.02",
           "before": "STEER\n−0.48\nTHROTTLE\n+0.86\nGENERATION\n4",
-          "after": "STEER\n−0.01\nTHROTTLE\n+0.50\nGENERATION\n4"
+          "after": "STEER\n−0.00\nTHROTTLE\n+0.52\nGENERATION\n4"
         }
       },
       {
@@ -178,7 +184,7 @@
         "data": {
           "max": "3",
           "first": "GENERATION 1\n24% of a lap\nGENERATION 1\n24% of a lap\nTIME SAVED\n–",
-          "last": "GENERATION 1\n24% of a lap\nGENERATION 5\n34% of a lap\nTIME SAVED\n–",
+          "last": "GENERATION 1\n24% of a lap\nGENERATION 6\n34% of a lap\nTIME SAVED\n–",
           "afterRestart": "0"
         }
       },
@@ -186,8 +192,14 @@
         "label": "theme persistence",
         "pass": true,
         "data": "dark survives reload"
+      },
+      {
+        "label": "no browser errors including raw window events",
+        "pass": true,
+        "data": []
       }
-    ]
+    ],
+    "errors": []
   },
   {
     "name": "landscape",
@@ -223,7 +235,7 @@
             "label": "Genomes as grids of weights; parents combine into a child, then mutate",
             "width": 777,
             "height": 388,
-            "painted": 70310
+            "painted": 70348
           },
           {
             "label": "The circuit with the first and a later generation’s best lines, coloured by speed",
@@ -235,7 +247,7 @@
             "label": "Speed along the lap for both lines",
             "width": 777,
             "height": 140,
-            "painted": 2279
+            "painted": 2286
           }
         ]
       },
@@ -245,8 +257,8 @@
         "data": {
           "high": "0.98",
           "low": "0.02",
-          "before": "STEER\n−0.47\nTHROTTLE\n+0.87\nGENERATION\n4",
-          "after": "STEER\n+0.03\nTHROTTLE\n+0.57\nGENERATION\n4"
+          "before": "STEER\n−0.44\nTHROTTLE\n+0.87\nGENERATION\n4",
+          "after": "STEER\n+0.05\nTHROTTLE\n+0.55\nGENERATION\n4"
         }
       },
       {
@@ -281,7 +293,13 @@
         "label": "theme persistence",
         "pass": true,
         "data": "dark survives reload"
+      },
+      {
+        "label": "no browser errors including raw window events",
+        "pass": true,
+        "data": []
       }
-    ]
+    ],
+    "errors": []
   }
 ]

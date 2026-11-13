@@ -1,19 +1,22 @@
 [
   {
     "name": "desktop",
+    "errors": [],
     "readout": "GENERATION 11\n19.34 s lap\nGENERATION 26\n13.51 s lap\nTIME SAVED\n5.83 s",
     "traceChanged": true,
     "pass": true
   },
   {
     "name": "portrait",
+    "errors": [],
     "readout": "GENERATION 11\n19.34 s lap\nGENERATION 26\n13.51 s lap\nTIME SAVED\n5.83 s",
     "heldTraceChanged": true,
-    "traceChanged": true,
+    "traceChanged": false,
     "pass": true
   },
   {
     "name": "landscape",
+    "errors": [],
     "readout": "GENERATION 11\n19.34 s lap\nGENERATION 26\n13.51 s lap\nTIME SAVED\n5.83 s",
     "heldTraceChanged": true,
     "traceChanged": false,
