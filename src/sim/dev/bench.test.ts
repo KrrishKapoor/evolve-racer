@@ -1,34 +1,8 @@
 // Headless evolution + performance bench. Run with: BENCH=1 npx vitest run src/sim/dev/bench.test.ts
 import { test } from 'vitest';
 import { PRESETS } from '../presets';
-import { createSimulation, TOP_SPEED, GRIP, ACCEL, BRAKE } from '../sim';
-import type { Track } from '../types';
-
-/** Fastest possible lap driving exactly on the centreline (grip, accel and brake limits, no drag). */
-function centrelineLap(t: Track): number {
-  const n = t.n, k = 3;
-  const vmax = new Float64Array(n);
-  for (let i = 0; i < n; i++) {
-    const a = (i - k + n) % n, c = (i + k) % n;
-    const ax = t.cx[a], ay = t.cy[a], bx = t.cx[i], by = t.cy[i], cx = t.cx[c], cy = t.cy[c];
-    const cr = Math.abs((bx - ax) * (cy - ay) - (by - ay) * (cx - ax));
-    const r = cr < 1e-9 ? Infinity : (Math.hypot(bx - ax, by - ay) * Math.hypot(cx - bx, cy - by) * Math.hypot(ax - cx, ay - cy)) / (2 * cr);
-    vmax[i] = Math.min(TOP_SPEED, Math.sqrt(GRIP * r));
-  }
-  const ds = (i: number) => t.cum[i + 1] - t.cum[i];
-  const v = Float64Array.from(vmax);
-  for (let pass = 0; pass < 2; pass++) for (let j = 2 * n - 1; j >= 0; j--) {
-    const i = j % n, nx = (i + 1) % n;
-    v[i] = Math.min(v[i], Math.sqrt(v[nx] * v[nx] + 2 * BRAKE * ds(i)));
-  }
-  let cur = 0, time = 0;
-  for (let i = 0; i < n; i++) {
-    const nv = Math.min(v[(i + 1) % n], Math.sqrt(cur * cur + 2 * ACCEL * ds(i)));
-    time += (2 * ds(i)) / (cur + nv);
-    cur = nv;
-  }
-  return time;
-}
+import { createSimulation } from '../sim';
+import { centrelineLapTime as centrelineLap } from '../line';
 
 const env = (globalThis as { process?: { env: Record<string, string | undefined> } }).process?.env ?? {};
 

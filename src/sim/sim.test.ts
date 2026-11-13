@@ -93,3 +93,13 @@ test('evolution finishes a lap and keeps improving (Meridian, 400 cars)', () => 
   expect(stats[14].bestLapEver).toBeLessThan(stats[firstLap].bestLap);
   expect(stats[14].bestLine.length % 3).toBe(0);
 }, 60000);
+
+test('evolved line beats the best possible centreline lap (Oval, 600 cars)', async () => {
+  const { centrelineLapTime } = await import('./line');
+  const oval = PRESETS.find((p) => p.id === 'oval')!.track;
+  const sim = createSimulation(oval, { population: 600, seed: 1 });
+  let last: GenerationStats | null = null;
+  while (!last || last.generation < 20) last = sim.step() ?? last;
+  expect(last.bestLapEver).toBeGreaterThan(0);
+  expect(last.bestLapEver).toBeLessThan(centrelineLapTime(oval));
+}, 120000);
