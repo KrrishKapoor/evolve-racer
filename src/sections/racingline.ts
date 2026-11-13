@@ -1,13 +1,33 @@
 // Why the racing line emerges: a population evolves headless on screen; compare any generation's best line with the first.
 import { PRESETS } from '../sim/presets';
-import { createSimulation } from '../sim/sim';
+import { createSimulation, GRIP, TOP_SPEED } from '../sim/sim';
 import type { GenerationStats } from '../sim/types';
 import { capture, createSurface, getTokens, onTheme, runWhileVisible, el, drawTrack, fitView, rgba, touchCanvas, type View } from './canvas';
 
 const MAX_GEN = 40;
 const BUCKETS = 12;
 
-interface Rec { gen: number; line: Float32Array; lap: number; progress: number }
+interface Rec { gen: number; line: Float32Array; lap: number; progress: number; limit?: Float32Array }
+
+/** Fastest speed (0..1 of top speed) the grip allows at each point of a line: sqrt(GRIP * radius). */
+function gripLimit(line: Float32Array): Float32Array {
+  const n = line.length / 3;
+  const out = new Float32Array(n).fill(1);
+  const k = 3;
+  for (let i = k; i < n - k; i++) {
+    const ax = line[(i - k) * 3], ay = line[(i - k) * 3 + 1];
+    const bx = line[i * 3], by = line[i * 3 + 1];
+    const cx = line[(i + k) * 3], cy = line[(i + k) * 3 + 1];
+    const cross = Math.abs((bx - ax) * (cy - ay) - (by - ay) * (cx - ax));
+    const abc = Math.hypot(bx - ax, by - ay) * Math.hypot(cx - bx, cy - by) * Math.hypot(cx - ax, cy - ay);
+    if (cross < 1e-6 || abc < 1e-6) continue;
+    const radius = abc / (2 * cross);
+    out[i] = Math.min(1, Math.sqrt(GRIP * radius) / TOP_SPEED);
+  }
+  // Light smoothing so sampling noise does not read as a corner.
+  for (let pass = 0; pass < 2; pass++) for (let i = 1; i < n - 1; i++) out[i] = (out[i - 1] + 2 * out[i] + out[i + 1]) / 4;
+  return out;
+}
 
 export function mountRacingLine(fig: HTMLElement): void {
   const track = PRESETS[0].track;
@@ -246,6 +266,22 @@ export function mountRacingLine(fig: HTMLElement): void {
       ctx.stroke();
       ctx.setLineDash([]);
     };
+    // The grip ceiling of the shown line: anything above it would slide off.
+    if (cur && cur.lap > 0) {
+      const lim = (cur.limit ??= gripLimit(cur.line));
+      const n = lim.length;
+      ctx.beginPath();
+      ctx.moveTo(0, top);
+      for (let i = 0; i < n; i++) ctx.lineTo((i / (n - 1)) * w, bot - lim[i] * (bot - top));
+      ctx.lineTo(w, top);
+      ctx.closePath();
+      ctx.fillStyle = tk.hairline;
+      ctx.fill();
+      ctx.font = `500 11px ${tk.font}`;
+      ctx.fillStyle = tk.ink3;
+      ctx.textAlign = 'right';
+      ctx.fillText('GRIP LIMIT', w, top - 5);
+    }
     if (first) plot(first, false);
     if (cur && cur !== first) plot(cur, true);
     if (scrub >= 0) {

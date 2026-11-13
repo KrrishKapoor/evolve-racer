@@ -53,7 +53,7 @@
 .xs-canvas--sees { aspect-ratio: 16 / 8; }
 .xs-canvas--genes { aspect-ratio: 2 / 1; background: transparent; border: 1px solid var(--hairline); }
 .xs-canvas--line { aspect-ratio: 16 / 10; }
-.xs-canvas--trace { height: 120px; background: transparent; border-radius: 0; }
+.xs-canvas--trace { height: 140px; background: transparent; border-radius: 0; }
 .xs-canvas--car { aspect-ratio: 4 / 3; }
 .xs-canvas--net { aspect-ratio: 4 / 3; background: var(--stage); }
 

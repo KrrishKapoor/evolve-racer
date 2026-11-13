@@ -54,7 +54,7 @@ export function mountGenetics(fig: HTMLElement): void {
   let pb = 1;
   let phase = 0;
   let t = 0; // seconds into the current phase
-  let auto = true;
+  let auto = !reducedMotion();
 
   const reseed = () => {
     for (let i = 0; i < POP; i++) randomGenome(rng, pop, i * GENOME_SIZE);
