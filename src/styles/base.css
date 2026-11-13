@@ -125,6 +125,8 @@ button {
   margin: 0 auto clamp(1.5rem, 3vw, 2.25rem);
 }
 
+.hero-stage { min-width: 0; }
+
 .hero h1 {
   /* Sized so the headline is one line on a laptop and the stage starts well above the fold. */
   font-size: clamp(2.5rem, 4.6vw, 4rem);
@@ -149,6 +151,8 @@ button {
   padding-top: var(--section-gap);
 }
 
+#sections section { scroll-margin-top: 76px; }
+
 .footer {
   max-width: calc(var(--page) + 2 * var(--gutter));
   margin: 0 auto;
@@ -172,19 +176,23 @@ button {
   }
 }
 
-/* Short landscape phones: keep the hero copy compact so the stage is reachable. */
+/* Use the width of a landscape phone to keep the live circuit fully in view. */
 @media (max-height: 500px) and (orientation: landscape) {
   .hero {
-    padding-top: 2rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2.5fr);
+    gap: 1.5rem;
+    padding-top: 1rem;
   }
   .hero-copy {
-    margin-bottom: 1.5rem;
+    text-align: left;
+    margin: 2.75rem 0 0;
   }
   .hero h1 {
-    font-size: 2.25rem;
+    font-size: 1.875rem;
   }
   .lede {
-    font-size: 1rem;
+    font-size: 0.875rem;
     margin-top: 0.75rem;
   }
 }

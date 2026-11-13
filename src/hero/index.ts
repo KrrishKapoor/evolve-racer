@@ -35,13 +35,19 @@ export function mountHero(root: HTMLElement): void {
   presets.setAttribute('aria-label', 'Circuit');
   const drawBtn = h('button', 'text-btn draw-btn', 'Draw a track');
   drawBtn.type = 'button';
-  bar.append(presets, drawBtn);
+  const resetBtn = h('button', 'text-btn', 'Reset');
+  resetBtn.type = 'button';
+  resetBtn.setAttribute('aria-label', 'Reset evolution');
+  const actions = h('div', 'stage-actions');
+  actions.append(resetBtn, drawBtn);
+  bar.append(presets, actions);
 
   const stage = h('div', 'stage');
   const box = h('div', 'stage-box');
   const canvas = h('canvas', 'stage-canvas');
   canvas.setAttribute('aria-label', 'Evolution running live. Click a car to inspect it.');
   const hint = h('div', 'stage-hint');
+  hint.hidden = true;
   const hintText = h('span', '', 'Draw one closed loop. Lift to build it.');
   const cancel = h('button', 'text-btn', 'Cancel');
   cancel.type = 'button';
@@ -69,6 +75,12 @@ export function mountHero(root: HTMLElement): void {
 
   const client = createSimClient({ track, population, seed: SEED });
   const inspector = createInspector(inspectorEl);
+  const closeInspector = h('button', 'icon-btn inspector-close');
+  closeInspector.type = 'button';
+  closeInspector.setAttribute('aria-label', 'Close car inspector');
+  closeInspector.innerHTML = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m4 4 8 8m0-8-8 8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>';
+  closeInspector.addEventListener('click', clearInspect);
+  inspectorEl.append(closeInspector);
   const view = { s: 1, ox: 0, oy: 0, rot: false };
   const trackLayer = makeLayer();
   const prevLayer = makeLayer();
@@ -132,8 +144,14 @@ export function mountHero(root: HTMLElement): void {
     return b;
   });
   presets.append(...presetBtns);
+  resetBtn.addEventListener('click', () => {
+    setDrawing(false);
+    client.setTrack(track);
+    restartUi();
+  });
 
   function loadTrack(t: Track, active: HTMLButtonElement | null): void {
+    setDrawing(false);
     for (const b of presetBtns) b.setAttribute('aria-pressed', String(b === active));
     // Keep the old circuit around for a short cross-fade.
     prevLayer.width = trackLayer.width;
@@ -197,7 +215,8 @@ export function mountHero(root: HTMLElement): void {
       const dx = snap.x[i] - x, dy = snap.y[i] - y;
       const d = dx * dx + dy * dy;
       if (snap.fade[i] >= 1 && d < bestD) { bestD = d; best = i; }
-      if (snap.fade[i] > 0 && d < anyD) { anyD = d; any = i; }
+      // Faded wrecks remain visible on the circuit, so they must remain inspectable too.
+      if (d < anyD) { anyD = d; any = i; }
     }
     return best >= 0 ? best : any;
   }
@@ -210,10 +229,17 @@ export function mountHero(root: HTMLElement): void {
 
   // Drawing uses pointer events; picking uses click so a swipe on the stage still scrolls the page on phones.
   let justDrew = false;
+  let downCar = -1, downGen = -1, downX = 0, downY = 0;
   canvas.addEventListener('pointerdown', (e) => {
     justDrew = drawing;
-    if (!drawing) return;
     const [x, y] = localPoint(e);
+    if (!drawing) {
+      const snap = client.latest;
+      downCar = snap && speed !== 'max' ? pick(snap, x, y, 36 / view.s) : -1;
+      downGen = snap?.generation ?? -1;
+      downX = e.clientX; downY = e.clientY;
+      return;
+    }
     canvas.setPointerCapture(e.pointerId);
     stroke = [x, y];
     toast.classList.remove('is-on');
@@ -224,7 +250,10 @@ export function mountHero(root: HTMLElement): void {
     const [x, y] = localPoint(e);
     const snap = client.latest;
     if (!snap || speed === 'max') return;
-    const i = pick(snap, x, y, 36 / view.s);
+    // A fast car can move away between press and release. Keep the car the reader pressed.
+    const heldPick = downCar >= 0 && downGen === snap.generation && Math.hypot(e.clientX - downX, e.clientY - downY) < 12;
+    const i = heldPick ? downCar : pick(snap, x, y, 36 / view.s);
+    downCar = -1;
     if (i < 0) { clearInspect(); return; }
     inspected = i;
     inspectedGen = snap.generation;
@@ -243,7 +272,12 @@ export function mountHero(root: HTMLElement): void {
   function endStroke(e: PointerEvent): void {
     if (!drawing || !stroke.length) return;
     if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
-    const t = buildTrack(stroke);
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (let i = 0; i < stroke.length; i += 2) {
+      minX = Math.min(minX, stroke[i]); maxX = Math.max(maxX, stroke[i]);
+      minY = Math.min(minY, stroke[i + 1]); maxY = Math.max(maxY, stroke[i + 1]);
+    }
+    const t = Math.min(maxX - minX, maxY - minY) * view.s >= 40 ? buildTrack(stroke) : null;
     stroke = [];
     if (!t) {
       showToast('That loop crosses itself or is too small. Try a bigger, simpler shape.');
@@ -267,9 +301,15 @@ export function mountHero(root: HTMLElement): void {
     drawing = on;
     stroke = [];
     box.classList.toggle('is-drawing', on);
+    hint.hidden = !on;
     drawBtn.setAttribute('aria-pressed', String(on));
     toast.classList.remove('is-on');
-    if (on) clearInspect();
+    if (on) {
+      clearInspect();
+      // Freeze the drawing transform before the first pointer sample.
+      inset = 0; insetTo = 0; insetStart = -1;
+      renderLayers();
+    }
   }
   drawBtn.addEventListener('click', () => setDrawing(!drawing));
   cancel.addEventListener('click', () => setDrawing(false));

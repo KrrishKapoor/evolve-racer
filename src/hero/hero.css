@@ -13,6 +13,12 @@
   margin-left: -0.625rem;
 }
 
+.stage-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .text-btn {
   min-height: 36px;
   padding: 0 0.625rem;
@@ -53,7 +59,8 @@
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 10;
-  max-height: calc(100svh - 52px - 7rem);
+  /* Leave room for the headline, circuit picker and HUD in the first desktop viewport. */
+  max-height: calc(100svh - 27rem);
   min-height: 260px;
   border-radius: var(--radius);
   background: var(--stage);
@@ -133,6 +140,7 @@
 }
 
 .stage-inspector {
+  position: relative;
   margin-top: 0.75rem;
   border-radius: var(--radius-sm);
   background: var(--surface);
@@ -141,6 +149,21 @@
 }
 
 .stage-inspector[hidden] {
+  display: none;
+}
+
+.inspector-close {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.25rem;
+  z-index: 1;
+}
+
+.stage-inspector .nv-head {
+  padding-right: 2rem;
+}
+
+.stage-hint[hidden] {
   display: none;
 }
 
@@ -263,7 +286,8 @@
 
 @media (max-width: 640px) {
   .stage-box {
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 1 / 1;
+    max-height: none;
   }
   .stage-bar {
     flex-direction: column;
@@ -301,18 +325,30 @@
     width: 44px;
     height: 44px;
   }
+  .inspector-close { width: 44px; height: 44px; }
   .seg-btn {
     height: 40px;
   }
 }
 
-/* Short landscape phones: let the stage take nearly the whole viewport under the nav. */
+/* The copy sits beside the stage on short screens; the whole circuit fits above the fold. */
 @media (max-height: 500px) and (orientation: landscape) {
   .stage-bar {
     margin-bottom: 0.5rem;
   }
   .stage-box {
-    max-height: calc(100svh - 52px - 1.5rem);
+    height: calc(100svh - 52px - 2rem - 52px);
+    max-height: none;
     min-height: 0;
   }
+  .stage-bar { gap: 0.25rem; }
+  .stage-actions { gap: 0.125rem; }
+  .stage-presets { gap: 0; margin-left: -0.375rem; }
+  .text-btn { padding-inline: 0.375rem; min-height: 44px; }
+  .draw-btn { padding-inline: 0.625rem; }
+  .hud-stats { gap: 1.25rem; flex-wrap: wrap; }
+  .hud-spark { flex: 1; min-width: 6rem; }
+  .hud-controls { gap: 0.5rem; }
+  .play-btn { width: 44px; height: 44px; }
+  .seg-btn { height: 40px; }
 }
