@@ -86,7 +86,7 @@ export function mountSees(fig: HTMLElement): void {
     }
     camX += (x - camX) * Math.min(1, dt * 3);
     camY += (y - camY) * Math.min(1, dt * 3);
-    const scale = Math.min(w, h * 1.4) / (RAY_RANGE * 2.6);
+    const scale = Math.min(w, h * 1.4) / (RAY_RANGE * (w < 640 ? 2.2 : 2.6));
     view.scale = scale;
     view.ox = w / 2 - camX * scale;
     view.oy = h / 2 - camY * scale;

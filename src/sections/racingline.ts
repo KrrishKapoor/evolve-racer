@@ -27,14 +27,15 @@ export function mountRacingLine(fig: HTMLElement): void {
   range.max = '0';
   range.value = '0';
   range.setAttribute('aria-label', 'Generation');
-  const genEl = el('span', 'xs-num');
   const lapEl = el('span', 'xs-num');
   const firstEl = el('span', 'xs-num');
   const readout = el('div', 'xs-readout');
   const deltaEl = el('span', 'xs-num');
   const firstPair = pair('Generation 1', firstEl);
   const firstLabel = firstPair.firstChild as HTMLElement;
-  readout.append(pair('Generation', genEl), firstPair, pair('This line', lapEl), pair('Time saved', deltaEl));
+  const curPair = pair('Generation', lapEl);
+  const curLabel = curPair.firstChild as HTMLElement;
+  readout.append(firstPair, curPair, pair('Time saved', deltaEl));
   const restart = el('button', 'xs-btn', 'Start over');
   controls.append(range, restart);
   const legend = el('div', 'xs-legend');
@@ -138,7 +139,7 @@ export function mountRacingLine(fig: HTMLElement): void {
     if (cur && cur !== first) strokeLine(cur.line, true);
     else if (first) strokeLine(first.line, true);
 
-    genEl.textContent = cur ? String(cur.gen) : '0';
+    curLabel.textContent = cur ? `Generation ${cur.gen}` : 'Generation';
     firstEl.textContent = first ? describe(first) : '–';
     lapEl.textContent = cur ? describe(cur) : '–';
     firstLabel.textContent = first ? `Generation ${first.gen}` : 'Generation 1';

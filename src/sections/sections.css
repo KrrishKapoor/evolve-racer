@@ -252,3 +252,7 @@
   .xs-readout:has(> :nth-child(4)) { grid-template-columns: 1fr 1fr; }
   .xs-canvas--car { aspect-ratio: 2 / 1; }
 }
+
+/* Keep big demos inside a short landscape viewport. */
+.xs-canvas--sees,
+.xs-canvas--line { max-height: 80svh; }
