@@ -1,0 +1,13 @@
+
+> evolve-racer@0.1.0 test
+> vitest run
+
+
+ RUN  v5.1.0 /Users/krrishai/.t3/worktrees/evolve-racer/feat-v1-prototype-cc8f193df235e579
+
+
+ Test Files  8 passed | 3 skipped (11)
+      Tests  37 passed | 3 skipped (40)
+   Start at  04:45:35
+   Duration  5.51s (tests 93%, import 6%, transform 1%)
+

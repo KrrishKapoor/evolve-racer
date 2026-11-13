@@ -1,0 +1,70 @@
+Independent QA — Evolve Racer
+QA model: GPT-6 Astra, high reasoning effort (authorized fallback).
+Checked HEAD before/after: 73fd18cb3e51cba2ec8de02e2f70e1516cbe6f71
+Date: 2026-11-13. URL: http://localhost:5180/
+Verdict: PASS for the exercised Chromium flows. No reproducible product failures found.
+
+Coverage and measurements
+Viewport                  Main checks   Initial lap/gen   Improved lap/gen   Drawn-loop lap/gen
+1440x900 desktop          17/17         13.6625 s / 11    10.0883 s / 41    7.4757 s / 18
+390x844 touch portrait    18/18         13.6625 s / 11    10.0883 s / 41    8.1613 s / 18
+844x390 touch landscape   18/18         13.6625 s / 11    10.0883 s / 41    7.2552 s / 18
+Drawn shapes vary with viewport aspect ratio; their lap times are not directly comparable.
+
+All viewports passed: real initial generation-11 warmup with best lap and visible racing line; Max evolution followed by 1x with a strictly improved lap; pause/resume; 1x/4x/Max selection; reset; all four presets (Meridian, Oval, Citadel, Coastline); 250/500/1000 population changes; closed-loop drawing accepted and immediately reset to generation 1 while paused, followed by real evolution to generation 18; invalid tiny stroke showed feedback and preserved a pixel-identical paused circuit and generation.
+
+Mouse on desktop and actual Chromium touch injection on both mobile viewports exercised drawing. Click/tap on a moving live car opened the inspector with changing ray values and neuron activations. Visible wrecks were selected while paused and reported crashed with speed exactly zero. Desktop circuit right edge was x=875.84, panel left x=960: 84.16 px clearance. Touch stage swipes outside drawing scrolled the page 95 px in both sizes; drawing moved the page 0 px.
+
+Layout: horizontal overflow 0 px in all sizes. HUD bottom equaled the sections container's top, with no overlap. Stage bottoms: desktop 798.33/900 px, portrait 751.47/844 px, landscape 374/390 px. Portrait and landscape HUD controls require scrolling; the requested entire circuit stage is above the fold. Landscape inspector omits numeric ray meters by its short-screen CSS; rays remain visible on the circuit and the network remains visible.
+
+FPS: 1,000-car configured population, natural live/crashed mix, default preset. Each speed had a 2.5-second settling period followed by an independent ~8-second requestAnimationFrame sample. No unit/build/heavy browser tests ran during FPS sampling. Only one automated browser context was running; the shared preview had already been closed.
+Viewport     Mode   Actual rAF FPS   Mean __evolve.fps   p95 frame interval
+Desktop      1x     60.003           60.003             16.7 ms
+Desktop      4x     60.002           60.003             16.8 ms
+Desktop      Max    60.003           60.003             16.8 ms
+Portrait     1x     60.002           60.003             16.7 ms
+Portrait     4x     60.002           60.003             16.7 ms
+Portrait     Max    60.002           60.003             16.8 ms
+Landscape    1x     60.002           60.003             16.7 ms
+Landscape    4x     60.002           60.003             16.7 ms
+Landscape    Max    60.002           60.003             16.8 ms
+Max intentionally hides cars. These are headless Chromium render-loop measurements on this machine, not physical-phone GPU or Safari performance claims. Mobile contexts use Chromium touch/mobile emulation at DPR 1.
+
+Explainer and visual review
+All six section canvases had nonzero painted pixels before scrolling into them. Sensor drag was consumed and changed readings. Network input bar drag changed the held input from 0.98 to 0.02 and changed steering/throttle. All four explicit genetics phases were exercised. Racing generation slider changed selected-generation readouts; Start over reset its range. Dark mode survived reload in each viewport. All seven focused follow-up checks passed per viewport. Supplemental measurements are in demo-results.json and racing-results.json. The racing demo reached generation 26 with a 13.51 s lap versus its first completed lap at generation 11 (19.34 s), a displayed 5.83 s saving.
+Light/dark heroes, moving/wreck inspectors, drawn tracks, and all four demos were reviewed directly and with contact sheets. Typography, track strokes, network graphics, mobile stacking and landscape layout are coherent. No blank canvas or broken asset was observed. Original viewport screenshots retain the sticky navigation. The *-complete element captures can include the sticky header over a cropped section; *-clean and *-racing-evolved captures hide only that header for the screenshot to make the full section reviewable, without changing source.
+
+Errors and checks
+Main pass captured zero console warnings/errors, page errors, failed network requests or HTTP >=400 responses across all three contexts.
+npm test: PASS — 8 files, 37 tests passed; 3 files/tests skipped by default (benchmarks).
+npm run build: PASS — TypeScript noEmit and Vite production build.
+No implementation edits, subagents, commits, pushes or deployment. Only artifacts/ is untracked. Shared preview tab opened for this pass was closed; parent's dev server was left running.
+
+Failures / reproduction / severity
+No confirmed product defect to assign severity.
+QA script corrections (no implementation changes):
+1. Slider timing false positive: the first supplemental slider test read the displayed generation immediately after Home/End, before requestAnimationFrame repainted it. Added a 120 ms render wait and reran all supplemental viewports: passed. Original results/log preserved as demo-results-before-wait-fix.json and demo-run-before-wait-fix.log. This was a test-script correction only.
+2. Touch speed-trace marker was initially sampled after touchEnd, which triggers pointerleave and clears the marker. The final test samples while held, before release. The initial result is preserved in racing-results-before-held-fix.json.
+
+Reproduce from repository root (server must already be on port 5180):
+node artifacts/qa/independent-qa.mjs
+node artifacts/qa/demo-followup.mjs
+node artifacts/qa/racing-followup.mjs
+node artifacts/qa/review-images.mjs
+npm test
+npm run build
+Run sequentially; do not run other heavy work during independent-qa.mjs FPS samples.
+
+Evidence (all paths relative to repository root)
+artifacts/qa/results.json — exact main measurements, full generation/lap histories, errors, assertions
+artifacts/qa/demo-results.json — focused interaction and first-paint evidence
+artifacts/qa/racing-results.json — evolved racing demo and trace input evidence
+artifacts/qa/npm-test.log, artifacts/qa/npm-build.log — command outputs
+artifacts/qa/lap-chart.html — measured lap history chart
+For each prefix desktop, portrait, landscape:
+  artifacts/qa/<prefix>-hero-light.png and <prefix>-hero-dark.png
+  artifacts/qa/<prefix>-inspector-live.png, <prefix>-inspector-wreck.png, <prefix>-inspector-complete.png
+  artifacts/qa/<prefix>-drawn-track.png
+  artifacts/qa/<prefix>-section-sees.png, -section-network.png, -section-evolution.png, -section-racing-line.png
+  artifacts/qa/<prefix>-sees-clean.png, -network-clean.png, -evolution-clean.png, -racing-evolved.png
+  artifacts/qa/<prefix>-review-sheet.png

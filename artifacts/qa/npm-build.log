@@ -1,0 +1,22 @@
+
+> evolve-racer@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v8.3.8 building client environment for production...
+transforming...
+✓ 34 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                             2.02 kB │ gzip:  0.94 kB
+dist/assets/worker-CdLSFFYC.js                              9.18 kB
+dist/assets/inter-vietnamese-wght-normal-CBcvBZtf.woff2    10.25 kB
+dist/assets/inter-greek-ext-wght-normal-DlzME5K_.woff2     11.23 kB
+dist/assets/inter-cyrillic-wght-normal-DqGufNeO.woff2      18.74 kB
+dist/assets/inter-greek-wght-normal-CkhJZR-_.woff2         18.99 kB
+dist/assets/inter-cyrillic-ext-wght-normal-BOeWTOD4.woff2  25.96 kB
+dist/assets/inter-latin-wght-normal-Dx4kXJAl.woff2         48.25 kB
+dist/assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2     85.06 kB
+dist/assets/index-CWbtu5pR.css                             18.84 kB │ gzip:  4.85 kB
+dist/assets/index-tFyS-zZ8.js                              56.89 kB │ gzip: 22.37 kB
+
+✓ built in 41ms

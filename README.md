@@ -47,7 +47,7 @@ npm run build
 BENCH=1 SEED=7 GENS=18 POP=1000 npx vitest run src/sim/dev/bench.test.ts
 ```
 
-Unit and integration tests cover track geometry, ray casting, physics, network inference, genetic operators, deterministic evolution and lap improvement. Browser QA evidence is saved under `artifacts/qa/`.
+Unit and integration tests cover track geometry, ray casting, physics, network inference, genetic operators, deterministic evolution and lap improvement. The [independent QA report](artifacts/qa/REPORT.txt) records 77 browser checks at 1440×900, 390×844 and 844×390, with screenshots and reproducible Playwright scripts under `artifacts/qa/`. QA used a fresh GPT-6 Astra high delegate after Claude rejected the requested Opus run for its API rate limit.
 
 ## Prototype limits
 

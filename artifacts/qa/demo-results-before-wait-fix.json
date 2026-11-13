@@ -1,0 +1,272 @@
+[
+  {
+    "name": "desktop",
+    "checks": [
+      {
+        "label": "complete inspector capture",
+        "pass": true,
+        "data": "captured entire stage and panel"
+      },
+      {
+        "label": "first paint before scrolling",
+        "pass": true,
+        "data": [
+          {
+            "label": "A car on the track with seven sensor rays. Drag up or down to move it across the track.",
+            "width": 1152,
+            "height": 504,
+            "painted": 248849
+          },
+          {
+            "label": "The best car of a small population driving an oval",
+            "width": 566,
+            "height": 425,
+            "painted": 37406
+          },
+          {
+            "label": "Its neural network: inputs on the left, steer and throttle on the right",
+            "width": 566,
+            "height": 425,
+            "painted": 39697
+          },
+          {
+            "label": "Genomes as grids of weights; parents combine into a child, then mutate",
+            "width": 1152,
+            "height": 576,
+            "painted": 142045
+          },
+          {
+            "label": "The circuit with the first and a later generation’s best lines, coloured by speed",
+            "width": 1152,
+            "height": 720,
+            "painted": 171709
+          },
+          {
+            "label": "Speed along the lap for both lines",
+            "width": 1152,
+            "height": 140,
+            "painted": 3022
+          }
+        ]
+      },
+      {
+        "label": "network held input changes output",
+        "pass": true,
+        "data": {
+          "high": "0.98",
+          "low": "0.02",
+          "before": "STEER\n−0.52\nTHROTTLE\n+0.87\nGENERATION\n4",
+          "after": "STEER\n+0.02\nTHROTTLE\n+0.64\nGENERATION\n4"
+        }
+      },
+      {
+        "label": "sensor drag consumed and readings change",
+        "pass": true,
+        "data": {
+          "before": "0.12\n1\n0.15\n2\n0.29\n3\n1.00\n4\n0.45\n5\n0.16\n6\n0.12\n7",
+          "after": "0.18\n1\n0.31\n2\n1.00\n3\n0.24\n4\n0.11\n5\n0.08\n6\n0.07\n7"
+        }
+      },
+      {
+        "label": "genetics four explicit phases",
+        "pass": true,
+        "data": [
+          "SELECT",
+          "CROSSOVER",
+          "MUTATE",
+          "RANK"
+        ]
+      },
+      {
+        "label": "racing generation scrub and restart",
+        "pass": false,
+        "error": "Generation scrub unchanged"
+      },
+      {
+        "label": "theme persistence",
+        "pass": true,
+        "data": "dark survives reload"
+      }
+    ]
+  },
+  {
+    "name": "portrait",
+    "checks": [
+      {
+        "label": "complete inspector capture",
+        "pass": true,
+        "data": "captured entire stage and panel"
+      },
+      {
+        "label": "first paint before scrolling",
+        "pass": true,
+        "data": [
+          {
+            "label": "A car on the track with seven sensor rays. Drag up or down to move it across the track.",
+            "width": 358,
+            "height": 239,
+            "painted": 24690
+          },
+          {
+            "label": "The best car of a small population driving an oval",
+            "width": 358,
+            "height": 179,
+            "painted": 14416
+          },
+          {
+            "label": "Its neural network: inputs on the left, steer and throttle on the right",
+            "width": 358,
+            "height": 269,
+            "painted": 19263
+          },
+          {
+            "label": "Genomes as grids of weights; parents combine into a child, then mutate",
+            "width": 358,
+            "height": 477,
+            "painted": 49188
+          },
+          {
+            "label": "The circuit with the first and a later generation’s best lines, coloured by speed",
+            "width": 358,
+            "height": 358,
+            "painted": 17407
+          },
+          {
+            "label": "Speed along the lap for both lines",
+            "width": 358,
+            "height": 140,
+            "painted": 1434
+          }
+        ]
+      },
+      {
+        "label": "network held input changes output",
+        "pass": true,
+        "data": {
+          "high": "0.98",
+          "low": "0.02",
+          "before": "STEER\n−0.49\nTHROTTLE\n+0.86\nGENERATION\n4",
+          "after": "STEER\n−0.02\nTHROTTLE\n+0.50\nGENERATION\n4"
+        }
+      },
+      {
+        "label": "sensor drag consumed and readings change",
+        "pass": true,
+        "data": {
+          "before": "0.12\n1\n0.15\n2\n0.29\n3\n1.00\n4\n0.46\n5\n0.16\n6\n0.12\n7",
+          "after": "0.19\n1\n0.32\n2\n0.92\n3\n0.22\n4\n0.11\n5\n0.08\n6\n0.07\n7"
+        }
+      },
+      {
+        "label": "genetics four explicit phases",
+        "pass": true,
+        "data": [
+          "SELECT",
+          "CROSSOVER",
+          "MUTATE",
+          "RANK"
+        ]
+      },
+      {
+        "label": "racing generation scrub and restart",
+        "pass": false,
+        "error": "Generation scrub unchanged"
+      },
+      {
+        "label": "theme persistence",
+        "pass": true,
+        "data": "dark survives reload"
+      }
+    ]
+  },
+  {
+    "name": "landscape",
+    "checks": [
+      {
+        "label": "complete inspector capture",
+        "pass": true,
+        "data": "captured entire stage and panel"
+      },
+      {
+        "label": "first paint before scrolling",
+        "pass": true,
+        "data": [
+          {
+            "label": "A car on the track with seven sensor rays. Drag up or down to move it across the track.",
+            "width": 777,
+            "height": 312,
+            "painted": 113789
+          },
+          {
+            "label": "The best car of a small population driving an oval",
+            "width": 378,
+            "height": 284,
+            "painted": 16539
+          },
+          {
+            "label": "Its neural network: inputs on the left, steer and throttle on the right",
+            "width": 378,
+            "height": 284,
+            "painted": 20800
+          },
+          {
+            "label": "Genomes as grids of weights; parents combine into a child, then mutate",
+            "width": 777,
+            "height": 388,
+            "painted": 70310
+          },
+          {
+            "label": "The circuit with the first and a later generation’s best lines, coloured by speed",
+            "width": 777,
+            "height": 312,
+            "painted": 27143
+          },
+          {
+            "label": "Speed along the lap for both lines",
+            "width": 777,
+            "height": 140,
+            "painted": 2279
+          }
+        ]
+      },
+      {
+        "label": "network held input changes output",
+        "pass": true,
+        "data": {
+          "high": "0.98",
+          "low": "0.02",
+          "before": "STEER\n−0.44\nTHROTTLE\n+0.87\nGENERATION\n4",
+          "after": "STEER\n+0.05\nTHROTTLE\n+0.55\nGENERATION\n4"
+        }
+      },
+      {
+        "label": "sensor drag consumed and readings change",
+        "pass": true,
+        "data": {
+          "before": "0.12\n1\n0.15\n2\n0.29\n3\n1.00\n4\n0.45\n5\n0.16\n6\n0.12\n7",
+          "after": "0.19\n1\n0.31\n2\n0.99\n3\n0.24\n4\n0.11\n5\n0.07\n6\n0.07\n7"
+        }
+      },
+      {
+        "label": "genetics four explicit phases",
+        "pass": true,
+        "data": [
+          "SELECT",
+          "CROSSOVER",
+          "MUTATE",
+          "RANK"
+        ]
+      },
+      {
+        "label": "racing generation scrub and restart",
+        "pass": false,
+        "error": "Generation scrub unchanged"
+      },
+      {
+        "label": "theme persistence",
+        "pass": true,
+        "data": "dark survives reload"
+      }
+    ]
+  }
+]
