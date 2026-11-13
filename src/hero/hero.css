@@ -219,6 +219,7 @@
 }
 
 .play-btn {
+  flex-shrink: 0;
   width: 36px;
   height: 36px;
   color: var(--ink);
@@ -255,7 +256,7 @@
 
 @media (max-width: 640px) {
   .stage-box {
-    aspect-ratio: 1 / 1.05;
+    aspect-ratio: 3 / 4;
   }
   .stage-bar {
     flex-direction: column;
@@ -280,7 +281,14 @@
   }
   .hud-controls {
     width: 100%;
+    gap: 0.5rem;
     justify-content: space-between;
+  }
+  .hud-pop .micro {
+    display: none;
+  }
+  .seg-btn {
+    min-width: 2.5rem;
   }
   .play-btn {
     width: 44px;

@@ -1,11 +1,14 @@
 // The hero stage: a live, worker-backed evolution on a circuit the reader can redraw.
 import { CAR_LENGTH, CAR_WIDTH, RAY_ANGLES, RAY_COUNT, RAY_RANGE } from '../sim/types';
 import type { GenerationStats, SimSpeed, Snapshot, Track } from '../sim/types';
-import { buildTrack, createInspector, createSimClient, PRESETS } from './stubs';
+import { createInspector } from '../netviz';
+import { PRESETS } from '../sim/presets';
+import { buildTrack } from '../sim/track';
+import { createSimClient } from './stubs';
 import { createHud } from './hud';
 import { drawLineLayer, drawTrackLayer, makeLayer } from './layers';
 import { onTheme, palette, readPalette } from './theme';
-import { fitView, toWorldX, toWorldY } from './view';
+import { applyView, fitView, toWorld } from './view';
 import './hero.css';
 
 declare global {
@@ -66,7 +69,7 @@ export function mountHero(root: HTMLElement): void {
 
   const client = createSimClient({ track, population, seed: SEED });
   const inspector = createInspector(inspectorEl);
-  const view = { s: 1, ox: 0, oy: 0 };
+  const view = { s: 1, ox: 0, oy: 0, rot: false };
   const trackLayer = makeLayer();
   const prevLayer = makeLayer();
   const lineLayer = makeLayer();
@@ -175,9 +178,10 @@ export function mountHero(root: HTMLElement): void {
     return best >= 0 ? best : any;
   }
 
+  const pt: [number, number] = [0, 0];
   function localPoint(e: PointerEvent): [number, number] {
     const r = canvas.getBoundingClientRect();
-    return [toWorldX(view, e.clientX - r.left), toWorldY(view, e.clientY - r.top)];
+    return toWorld(view, e.clientX - r.left, e.clientY - r.top, pt);
   }
 
   canvas.addEventListener('pointerdown', (e) => {
@@ -291,7 +295,7 @@ export function mountHero(root: HTMLElement): void {
     }
     g.drawImage(lineLayer, 0, 0);
 
-    g.setTransform(dpr * view.s, 0, 0, dpr * view.s, dpr * view.ox, dpr * view.oy);
+    applyView(g, view, dpr);
     if (snap && speed !== 'max' && !drawing) drawCars(snap);
     if (drawing && stroke.length >= 4) {
       g.strokeStyle = palette.ink;
@@ -374,6 +378,9 @@ export function mountHero(root: HTMLElement): void {
       g.stroke();
     }
   }
+
+  // QA hook for the Playwright checks; stripped from production builds.
+  if (import.meta.env.DEV) (window as unknown as { __hero: unknown }).__hero = { client, view };
 
   applySpeed();
   requestAnimationFrame(frame);

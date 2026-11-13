@@ -115,7 +115,7 @@ button {
 
 /* Hero */
 .hero {
-  padding: clamp(3.5rem, 9vw, 7rem) var(--gutter) 0;
+  padding: clamp(3rem, 7vw, 5rem) var(--gutter) 0;
   max-width: calc(var(--page) + 2 * var(--gutter));
   margin: 0 auto;
 }
@@ -123,7 +123,7 @@ button {
 .hero-copy {
   text-align: center;
   max-width: 48rem;
-  margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+  margin: 0 auto clamp(2rem, 4vw, 3rem);
 }
 
 .hero h1 {

@@ -1,7 +1,7 @@
 // Static layers rendered once to offscreen canvases: the circuit, and the best line (once per generation).
 import type { Track } from '../sim/types';
 import { palette } from './theme';
-import type { View } from './view';
+import { applyView, type View } from './view';
 
 export function makeLayer(): HTMLCanvasElement {
   return document.createElement('canvas');
@@ -11,7 +11,7 @@ function prep(c: HTMLCanvasElement, w: number, h: number, dpr: number, v: View):
   c.width = Math.round(w * dpr);
   c.height = Math.round(h * dpr);
   const g = c.getContext('2d')!;
-  g.setTransform(dpr * v.s, 0, 0, dpr * v.s, dpr * v.ox, dpr * v.oy);
+  applyView(g, v, dpr);
   return g;
 }
 
