@@ -103,10 +103,9 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
     labelFont = `600 ${w < 300 ? 8.5 : 9}px ${theme.font}`;
   }
 
-  function layout() {
-    const rect = canvas.getBoundingClientRect();
-    w = rect.width;
-    h = rect.height;
+  function layout(cw = canvas.clientWidth, ch = canvas.clientHeight) {
+    w = cw;
+    h = ch;
     dpr = Math.min(2, window.devicePixelRatio || 1);
     const bw = Math.max(1, Math.round(w * dpr));
     const bh = Math.max(1, Math.round(h * dpr));
@@ -203,18 +202,17 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
       ctx.globalAlpha = 1;
       ctx.fill();
       ctx.globalCompositeOperation = 'source-over';
-      if (k < NET_LAYERS[0]) {
-        ctx.fillStyle = theme.ink;
-        ctx.globalAlpha = 0.08 + 0.8 * Math.max(0, Math.min(1, a));
-      } else {
-        ctx.fillStyle = a < 0 ? theme.cool : theme.accent;
-        ctx.globalAlpha = 0.04 + 0.86 * Math.min(1, Math.abs(a));
-      }
-      ctx.fill();
-      ctx.globalAlpha = 1;
       ctx.strokeStyle = theme.ink3;
       ctx.lineWidth = 1;
       ctx.stroke();
+      // Activation as the area of a solid core: exact at a glance, no muddy tints.
+      const m = k < NET_LAYERS[0] ? Math.max(0, Math.min(1, a)) : Math.min(1, Math.abs(a));
+      const rr = (r - 1.5) * Math.sqrt(m);
+      if (rr < 0.4) continue;
+      ctx.fillStyle = k < NET_LAYERS[0] ? theme.ink : a < 0 ? theme.cool : theme.accent;
+      ctx.beginPath();
+      ctx.arc(x, y, rr, 0, Math.PI * 2);
+      ctx.fill();
     }
   }
 
@@ -347,8 +345,9 @@ export function createNetView(canvas: HTMLCanvasElement): NetView {
     if (visible) draw();
   }
 
-  const ro = new ResizeObserver(() => {
-    layout();
+  const ro = new ResizeObserver((entries) => {
+    const box = entries[entries.length - 1].contentRect;
+    layout(box.width, box.height);
     draw();
   });
   ro.observe(canvas);

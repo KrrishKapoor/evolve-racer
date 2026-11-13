@@ -15,6 +15,7 @@
   font-family: var(--font);
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
+  overflow: hidden;
   opacity: 0;
   transform: translateY(4px);
   transition:
@@ -182,4 +183,19 @@
   color: var(--ink-2);
   min-width: 0;
   text-align: center;
+}
+
+/* Short viewports (landscape phones): the canvas already shows every ray, so drop the meters. */
+@media (max-height: 520px) {
+  .nv-inspector {
+    gap: 10px;
+    padding: 12px 14px;
+  }
+  .nv-row-head,
+  .nv-rays {
+    display: none;
+  }
+  .nv-net {
+    min-height: 150px;
+  }
 }

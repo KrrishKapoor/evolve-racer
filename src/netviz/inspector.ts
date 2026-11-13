@@ -73,11 +73,19 @@ export function createInspector(container: HTMLElement): Inspector {
   let lastAlive = -1;
   let lastSpeed = -1;
   const lastRay = new Int16Array(RAY_COUNT).fill(-1);
+  let openRaf = 0;
+  // Unhide first, then add the class a frame later so the fade-in actually transitions.
+  const open = () => {
+    openRaf = 0;
+    if (!root.hidden) root.classList.add('nv-open');
+  };
 
   return {
     update(d) {
-      if (root.hidden) root.hidden = false;
-      root.classList.add('nv-open');
+      if (root.hidden) {
+        root.hidden = false;
+        if (!openRaf) openRaf = requestAnimationFrame(open);
+      }
       if (d.index !== lastIndex) {
         lastIndex = d.index;
         num.textContent = String(d.index);
@@ -105,11 +113,14 @@ export function createInspector(container: HTMLElement): Inspector {
       view.update(d.genome, d.activations);
     },
     hide() {
+      if (openRaf) cancelAnimationFrame(openRaf);
+      openRaf = 0;
       root.classList.remove('nv-open');
       root.hidden = true;
       lastIndex = -1;
     },
     destroy() {
+      if (openRaf) cancelAnimationFrame(openRaf);
       view.destroy();
       root.remove();
     },
