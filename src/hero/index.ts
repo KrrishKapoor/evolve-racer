@@ -73,7 +73,7 @@ export function mountHero(root: HTMLElement): void {
   let stroke: number[] = [];
   let bestLine: Float32Array | null = null;
 
-  const client = createSimClient({ track, population, seed: SEED });
+  const client = createSimClient({ track, population, seed: SEED, warmup: 10 });
   const inspector = createInspector(inspectorEl);
   const closeInspector = h('button', 'icon-btn inspector-close');
   closeInspector.type = 'button';
