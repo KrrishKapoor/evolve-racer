@@ -8,13 +8,13 @@ import { crossover, mutate, tournament } from './ga';
 import { createRaycaster } from './rays';
 
 // Physics. Units: world units and seconds.
-export const TOP_SPEED = 320;
-const ACCEL = 260;
-const BRAKE = 520;
-const DRAG = 0.15;
+export const TOP_SPEED = 400;
+export const ACCEL = 280;
+export const BRAKE = 520;
+export const DRAG = 0.15;
 const MAX_YAW = 4; // rad/s at low speed
 /** Lateral grip, units/s^2. Max yaw rate is GRIP / speed, so corners cap speed at sqrt(GRIP * radius). */
-export const GRIP = 700;
+export const GRIP = 600;
 
 const STALL_TIME = 2; // seconds without STALL_GAIN progress => dead
 const STALL_GAIN = 20;
