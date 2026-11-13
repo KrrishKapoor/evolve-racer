@@ -80,7 +80,7 @@ export function mountHero(root: HTMLElement): void {
 
   const hud = createHud(hudEl, {
     onPlay(p) { playing = p; applySpeed(); },
-    onSpeed(s) { speed = s; applySpeed(); },
+    onSpeed(s) { speed = s; if (s === 'max') clearInspect(); applySpeed(); },
     onPopulation(p) { population = p; client.setPopulation(p); restartUi(); },
   });
 
