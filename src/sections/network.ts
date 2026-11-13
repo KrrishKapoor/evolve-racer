@@ -43,11 +43,11 @@ export function mountNetwork(fig: HTMLElement): void {
   const view: View = { scale: 1, ox: 0, oy: 0 };
   let warm = true;
 
-  runWhileVisible(fig, () => {
+  runWhileVisible(fig, (dt) => {
     const { ctx, w, h } = s;
     if (!w) return;
     // Evolve a few generations quickly first so the driver is worth watching.
-    if (held < 0) {
+    if (held < 0 && dt > 0) {
       if (warm) {
         const t0 = performance.now();
         while (performance.now() - t0 < 6) {
@@ -92,7 +92,7 @@ export function mountNetwork(fig: HTMLElement): void {
     ctx.beginPath();
     for (let i = 0; i < RAY_COUNT; i++) {
       const a = d.angle + RAY_ANGLES[i];
-      const r = (held >= 0 ? d.rays[i] : d.rays[i]) * RAY_RANGE * view.scale;
+      const r = d.rays[i] * RAY_RANGE * view.scale;
       ctx.moveTo(cx, cy);
       ctx.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
     }

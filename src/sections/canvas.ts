@@ -61,7 +61,10 @@ export function createSurface(canvas: HTMLCanvasElement, onResize?: () => void):
   return s;
 }
 
-/** Calls `frame(dt)` on every animation frame while `el` is on screen and the tab is visible. */
+/**
+ * Calls `frame(dt)` on every animation frame while `el` is on screen and the tab is visible.
+ * Off screen, one still frame (dt = 0) is painted whenever `el` changes size, so a demo is never blank.
+ */
 export function runWhileVisible(el: Element, frame: (dt: number) => void): void {
   let onScreen = false;
   let raf = 0;
@@ -86,6 +89,11 @@ export function runWhileVisible(el: Element, frame: (dt: number) => void): void 
     onScreen = e[e.length - 1].isIntersecting;
     sync();
   }, { rootMargin: '100px' }).observe(el);
+  // Resizing clears a canvas; repaint a still frame when the loop is not running to do it.
+  new ResizeObserver(() => {
+    if (!raf) frame(0);
+  }).observe(el);
+  onTheme(() => { if (!raf) frame(0); });
   document.addEventListener('visibilitychange', sync);
 }
 

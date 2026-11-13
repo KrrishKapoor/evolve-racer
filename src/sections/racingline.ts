@@ -122,18 +122,15 @@ export function mountRacingLine(fig: HTMLElement): void {
   });
 
   const onStats = (st: GenerationStats) => {
-    const prev = recs[recs.length - 1];
-    const line = prev && prev.line.length === st.bestLine.length && prev.line[0] === st.bestLine[0] && st.bestLine.length > 3 && prev.line[3] === st.bestLine[3]
-      ? prev.line
-      : st.bestLine.slice();
-    recs.push({ gen: st.generation, line, lap: st.bestLapEver, progress: st.bestProgress });
+    // The sim replaces this array when the champion improves; it never mutates a recorded line.
+    recs.push({ gen: st.generation, line: st.bestLine, lap: st.bestLapEver, progress: st.bestProgress });
     range.max = String(recs.length - 1);
     if (pick < 0) range.value = range.max;
     dirty = true;
   };
 
-  runWhileVisible(fig, () => {
-    if (recs.length < MAX_GEN) {
+  runWhileVisible(fig, (dt) => {
+    if (dt > 0 && recs.length < MAX_GEN) {
       const t0 = performance.now();
       while (performance.now() - t0 < 2.5) {
         const st = sim.step();

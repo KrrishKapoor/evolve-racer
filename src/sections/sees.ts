@@ -11,10 +11,10 @@ export function mountSees(fig: HTMLElement): void {
   const rays = new Float32Array(RAY_COUNT);
 
   const canvas = el('canvas', 'xs-canvas xs-canvas--sees');
-  canvas.setAttribute('aria-label', 'A car on the track with seven sensor rays. Drag sideways to move it.');
+  canvas.setAttribute('aria-label', 'A car on the track with seven sensor rays. Drag up or down to move it across the track.');
   touchCanvas(canvas);
   const bars = createBars(RAY_ANGLES.map((_, i) => String(i + 1)), 'Ray readings, left to right. 1 means nothing within range.');
-  const hint = el('p', 'xs-hint', 'Drag sideways to move the car across the track.');
+  const hint = el('p', 'xs-hint', 'Drag up or down to move the car across the track.');
   fig.append(canvas, bars.root, hint);
 
   const s = createSurface(canvas);
@@ -30,20 +30,21 @@ export function mountSees(fig: HTMLElement): void {
   let idle = 0;
   let camX = track.startX;
   let camY = track.startY;
+  let camA = 0;
   let first = true;
 
-  let downX = 0;
+  let downY = 0;
   let downLat = 0;
   canvas.addEventListener('pointerdown', (e) => {
     capture(canvas, e.pointerId);
     held = true;
-    downX = e.clientX;
+    downY = e.clientY;
     downLat = target;
     hint.classList.add('is-used');
   });
   canvas.addEventListener('pointermove', (e) => {
     if (!held) return;
-    target = Math.max(-1.25, Math.min(1.25, downLat + (e.clientX - downX) / (s.w * 0.3)));
+    target = Math.max(-1.25, Math.min(1.25, downLat + (e.clientY - downY) / (s.h * 0.3)));
   });
   const up = () => {
     held = false;
@@ -78,25 +79,32 @@ export function mountSees(fig: HTMLElement): void {
     cast(x, y, angle, rays);
     bars.set(rays);
 
-    // Camera follows the car, sized so the full ray range fits.
+    // The camera rides the centreline and turns with it, so the car always heads right and its
+    // sideways position reads directly. Sized so the forward ray range just fits ahead of the car.
     if (first) {
-      camX = x;
-      camY = y;
+      camX = px;
+      camY = py;
+      camA = tang;
       first = false;
     }
-    camX += (x - camX) * Math.min(1, dt * 3);
-    camY += (y - camY) * Math.min(1, dt * 3);
-    const scale = Math.min(w, h * 1.4) / (RAY_RANGE * (w < 640 ? 2.2 : 2.6));
+    const k = Math.min(1, dt * 4);
+    camX += (px - camX) * k;
+    camY += (py - camY) * k;
+    camA += Math.atan2(Math.sin(tang - camA), Math.cos(tang - camA)) * Math.min(1, dt * 2.5);
+    const scale = Math.min((w * 0.78) / RAY_RANGE, (h * 0.42) / (track.halfWidth + 10));
     view.scale = scale;
-    view.ox = w / 2 - camX * scale;
-    view.oy = h / 2 - camY * scale;
+    view.ox = -camX * scale;
+    view.oy = -camY * scale;
 
     ctx.clearRect(0, 0, w, h);
+    ctx.save();
+    ctx.translate(w * 0.28, h / 2);
+    ctx.rotate(-camA);
     drawTrack(ctx, track, view, tk);
     const sx = view.ox + x * scale;
     const sy = view.oy + y * scale;
     // Rays: hairline to the hit, a dot where they land.
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1.25;
     for (let i = 0; i < RAY_COUNT; i++) {
       const a = angle + RAY_ANGLES[i];
       const d = rays[i] * RAY_RANGE * scale;
@@ -112,13 +120,15 @@ export function mountSees(fig: HTMLElement): void {
       if (rays[i] < 1) {
         ctx.fillStyle = tk.ink;
         ctx.beginPath();
-        ctx.arc(hx, hy, 3, 0, Math.PI * 2);
+        ctx.arc(hx, hy, 4, 0, Math.PI * 2);
         ctx.fill();
       } else {
         ctx.strokeStyle = tk.ink3;
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.arc(hx, hy, 2.5, 0, Math.PI * 2);
+        ctx.arc(hx, hy, 4.5, 0, Math.PI * 2);
         ctx.stroke();
+        ctx.lineWidth = 1.25;
       }
     }
     // Car body.
@@ -131,6 +141,7 @@ export function mountSees(fig: HTMLElement): void {
     ctx.beginPath();
     ctx.roundRect(-L / 2, -W / 2, L, W, W * 0.35);
     ctx.fill();
+    ctx.restore();
     ctx.restore();
   });
 }
