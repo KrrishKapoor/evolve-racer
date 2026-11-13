@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sections dev</title>
+    <style>
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); -webkit-font-smoothing: antialiased; }
+      main { padding: var(--section-gap) 0; }
+    </style>
+  </head>
+  <body>
+    <main id="sections"></main>
+    <script type="module">
+      import '../styles/tokens.css';
+      import { mountSections } from './index.ts';
+      const p = new URLSearchParams(location.search).get('theme');
+      if (p) document.documentElement.dataset.theme = p;
+      mountSections(document.getElementById('sections'));
+    </script>
+  </body>
+</html>
