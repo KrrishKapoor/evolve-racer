@@ -4,7 +4,7 @@ import type { GenerationStats, SimSpeed, Snapshot, Track } from '../sim/types';
 import { createInspector } from '../netviz';
 import { PRESETS } from '../sim/presets';
 import { buildTrack } from '../sim/track';
-import { createSimClient } from './stubs';
+import { createSimClient } from '../sim/client';
 import { createHud } from './hud';
 import { drawLineLayer, drawTrackLayer, makeLayer } from './layers';
 import { onTheme, palette, readPalette } from './theme';
@@ -141,14 +141,16 @@ export function mountHero(root: HTMLElement): void {
     hud.redraw();
   }).observe(box);
 
+  let inView = true;
+  const updateVisible = () => {
+    visible = inView && !document.hidden;
+    applySpeed();
+  };
   new IntersectionObserver((e) => {
-    visible = e[0].isIntersecting && !document.hidden;
-    applySpeed();
+    inView = e[0].isIntersecting;
+    updateVisible();
   }).observe(box);
-  document.addEventListener('visibilitychange', () => {
-    visible = !document.hidden;
-    applySpeed();
-  });
+  document.addEventListener('visibilitychange', updateVisible);
 
   onTheme(() => {
     requestAnimationFrame(() => {

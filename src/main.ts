@@ -1,7 +1,7 @@
 import './styles/tokens.css';
 import './styles/base.css';
 import { mountHero } from './hero';
-import { mountSections } from './hero/stubs';
+import { mountSections } from './sections';
 
 function setupTheme(): void {
   const btn = document.getElementById('theme-toggle')!;
