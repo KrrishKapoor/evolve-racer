@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Evolve Racer</title>
+    <meta name="description" content="A thousand tiny neural networks learn a racing line by evolution. Draw your own circuit and watch." />
+    <script>
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <header class="nav">
+      <a class="wordmark" href="/">Evolve Racer</a>
+      <div class="nav-right">
+        <a class="nav-link" href="https://github.com/KrrishKapoor/evolve-racer" target="_blank" rel="noopener">GitHub</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+            <circle cx="10" cy="10" r="7.25" fill="none" stroke="currentColor" stroke-width="1.5" />
+            <path d="M10 2.75a7.25 7.25 0 0 1 0 14.5z" fill="currentColor" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="hero" id="hero">
+      <div class="hero-copy">
+        <h1>Nobody taught these cars to&nbsp;drive.</h1>
+        <p class="lede">A thousand tiny neural networks, one circuit, and evolution. Draw your own track and watch a racing line appear.</p>
+      </div>
+      <div class="hero-stage" id="hero-stage"></div>
+    </section>
+
+    <main id="sections"></main>
+
+    <footer class="footer">
+      <p>Evolve Racer. Every car is a 140-number genome. No car is ever told how to drive.</p>
+      <a class="nav-link" href="https://github.com/KrrishKapoor/evolve-racer" target="_blank" rel="noopener">Source</a>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

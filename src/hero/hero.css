@@ -1,0 +1,292 @@
+.stage-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.stage-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.25rem;
+  margin-left: -0.625rem;
+}
+
+.text-btn {
+  min-height: 36px;
+  padding: 0 0.625rem;
+  font-size: var(--t-small);
+  font-weight: 500;
+  color: var(--ink-3);
+  border-radius: var(--radius-sm);
+  transition: color var(--dur) var(--ease);
+  white-space: nowrap;
+}
+
+.text-btn:hover {
+  color: var(--ink);
+}
+
+.text-btn[aria-pressed='true'] {
+  color: var(--ink);
+}
+
+.draw-btn {
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  padding: 0 0.875rem;
+  border-radius: 999px;
+}
+
+.draw-btn[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--bg);
+  box-shadow: none;
+}
+
+.stage {
+  position: relative;
+}
+
+.stage-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  max-height: calc(100svh - 52px - 7rem);
+  min-height: 260px;
+  border-radius: var(--radius);
+  background: var(--stage);
+  overflow: hidden;
+  transition: background-color var(--dur) var(--ease);
+}
+
+.stage-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.is-drawing .stage-canvas {
+  cursor: crosshair;
+}
+
+.is-max .stage-canvas {
+  cursor: default;
+}
+
+.stage-hint,
+.stage-toast {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: calc(100% - 2rem);
+  font-size: var(--t-small);
+  color: var(--ink-2);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease), translate var(--dur) var(--ease);
+}
+
+.stage-hint {
+  top: 0.75rem;
+  white-space: nowrap;
+}
+
+.stage-hint .text-btn {
+  color: var(--ink);
+}
+
+.is-drawing .stage-hint {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.stage-toast {
+  bottom: 1rem;
+  translate: -50% 4px;
+  color: var(--ink);
+  text-align: center;
+}
+
+.stage-toast.is-on {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+.stage-inspector {
+  margin-top: 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  animation: insp-in var(--dur) var(--ease);
+}
+
+.stage-inspector[hidden] {
+  display: none;
+}
+
+@keyframes insp-in {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}
+
+@media (min-width: 900px) {
+  .stage-inspector {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 320px;
+    max-height: calc(100% - 2rem);
+    overflow: auto;
+    margin: 0;
+    background: color-mix(in srgb, var(--surface) 90%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+}
+
+/* HUD */
+.hud {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+  flex-wrap: wrap;
+  margin-top: 1.25rem;
+}
+
+.hud-stats {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.25rem;
+}
+
+.hud-stat {
+  min-width: 4.5rem;
+}
+
+.hud-value {
+  margin-top: 0.125rem;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-of {
+  color: var(--ink-3);
+  font-weight: 400;
+  font-size: 0.9375rem;
+  letter-spacing: 0;
+}
+
+.hud-spark {
+  width: 10rem;
+}
+
+.hud-spark-canvas {
+  display: block;
+  width: 100%;
+  height: 30px;
+  margin-top: 0.25rem;
+}
+
+.hud-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hud-pop {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.play-btn {
+  width: 36px;
+  height: 36px;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+}
+
+.seg {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+}
+
+.seg-btn {
+  min-width: 2.75rem;
+  height: 32px;
+  padding: 0 0.5rem;
+  border-radius: 8px;
+  font-size: var(--t-small);
+  font-weight: 500;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+
+.seg-btn:hover {
+  color: var(--ink);
+}
+
+.seg-btn[aria-pressed='true'] {
+  color: var(--ink);
+  background: var(--hairline);
+}
+
+@media (max-width: 640px) {
+  .stage-box {
+    aspect-ratio: 1 / 1.05;
+  }
+  .stage-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .draw-btn {
+    align-self: flex-start;
+    min-height: 44px;
+  }
+  .text-btn {
+    min-height: 44px;
+  }
+  .hud-stats {
+    width: 100%;
+    gap: 1rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .hud-spark {
+    width: 100%;
+  }
+  .hud-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .play-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .seg-btn {
+    height: 40px;
+  }
+}
